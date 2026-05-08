@@ -755,7 +755,7 @@
 
         .modal-content {
             background: #fff;
-            width: 600px;
+            width: 800px;
             max-width: 95%;
             max-height: 90vh;
             border-radius: 8px;
@@ -1076,6 +1076,116 @@
         .legend-badge.na {
             background: #7f8c8d;
         }
+
+        /* STEPPER STYLES */
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 28px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: #ddd;
+            z-index: 1;
+        }
+
+        .step {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            flex: 1;
+        }
+
+        .step-circle {
+            width: 28px;
+            height: 28px;
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #999;
+            transition: all 0.3s;
+        }
+
+        .step.active .step-circle {
+            border-color: #2b63ff;
+            background: #2b63ff;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(43, 99, 255, 0.3);
+        }
+
+        .step.completed .step-circle {
+            border-color: #27ae60;
+            background: #27ae60;
+            color: #fff;
+        }
+
+        .step-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .step.active .step-label {
+            color: #2b63ff;
+        }
+
+        .modal-step-content {
+            display: none;
+        }
+
+        .modal-step-content.active {
+            display: block;
+        }
+
+        .btn-nav {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-prev {
+            background: #fff;
+            border: 1px solid #ccc;
+            color: #555;
+        }
+
+        .btn-prev:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-next {
+            background: #2b63ff;
+            border: none;
+            color: #fff;
+        }
+
+        .btn-next:hover {
+            background: #1a4cdb;
+        }
     </style>
 
 </head>
@@ -1312,13 +1422,13 @@
             },
             medio_ambiente: {
                 title: 'Inspecciones de Medio Ambiente', icon: '🌿', color: '#27ae60',
-                types: ['Insp. Residuos Sólidos', 'Manejo de Efluentes', 'Control de Emisiones'],
+                types: ['Inspección de Kit Anti-derrame'],
                 rows: [
-                    ['IMA-000021', 'Insp. Residuos Sólidos', 'Operaciones', 'Área de Acopio', 'No Planeado', 'CERRADO', '28/04/2026', '09:00', 'Ana Torres Vega'],
-                    ['IMA-000020', 'Manejo de Efluentes', 'Planta Sur', 'Canal de Descarga', 'Planeado', 'PROCESO', '20/04/2026', '10:15', 'Pedro Gómez León'],
-                    ['IMA-000019', 'Inspección de Derrames', 'Almacén Químico', 'Patio Trasero', 'No Planeado', 'PROCESO', '10/04/2026', '14:00', 'Luis Paredes Cruz'],
-                    ['IMA-000018', 'Segregación de Residuos', 'Gerencia', 'Oficinas', 'Planeado', 'CERRADO', '05/04/2026', '08:30', 'Ana Torres Vega'],
-                    ['IMA-000017', 'Control de Emisiones', 'Operaciones', 'Chimenea 1', 'Planeado', 'CERRADO', '01/04/2026', '07:45', 'Carla Ruiz Díaz'],
+                    ['IMA-000021', 'Inspección de Kit Anti-derrame', 'Operaciones', 'Área de Acopio', 'No Planeado', 'CERRADO', '28/04/2026', '09:00', 'Ana Torres Vega'],
+                    ['IMA-000020', 'Inspección de Kit Anti-derrame', 'Planta Sur', 'Canal de Descarga', 'Planeado', 'PROCESO', '20/04/2026', '10:15', 'Pedro Gómez León'],
+                    ['IMA-000019', 'Inspección de Kit Anti-derrame', 'Almacén Químico', 'Patio Trasero', 'No Planeado', 'PROCESO', '10/04/2026', '14:00', 'Luis Paredes Cruz'],
+                    ['IMA-000018', 'Inspección de Kit Anti-derrame', 'Gerencia', 'Oficinas', 'Planeado', 'CERRADO', '05/04/2026', '08:30', 'Ana Torres Vega'],
+                    ['IMA-000017', 'Inspección de Kit Anti-derrame', 'Operaciones', 'Chimenea 1', 'Planeado', 'CERRADO', '01/04/2026', '07:45', 'Carla Ruiz Díaz'],
                 ]
             },
             individual: {
@@ -1358,6 +1468,7 @@
         let currentKey = null, currentPage = 1, filteredRows = [];
         let lightCounter = 0;
         let extCounter = 0;
+        let currentModalStep = 1;
         const subMap = { seguridad: 'seg', medio_ambiente: 'ma', individual: 'ind', sst: 'sst', salud: 'sal' };
 
         function openInsp(key) {
@@ -1412,6 +1523,8 @@
             checklistCont.innerHTML = '';
             lightCounter = 0; 
             extCounter = 0;
+            currentModalStep = 1;
+            updateModalSteps();
 
             // Default options if no submodule is selected
             let options = ['Insp. Camilla de Emergencia', 'Inspección EPP', 'Insp. Kit Antiderrames'];
@@ -1446,6 +1559,9 @@
                 checklistCont.style.display = 'block';
             } else if (type === 'Inspección de Extintores') {
                 renderExtinguishersChecklist();
+                checklistCont.style.display = 'block';
+            } else if (type === 'Inspección de Kit Anti-derrame') {
+                renderKitAntiderramesChecklist();
                 checklistCont.style.display = 'block';
             } else {
                 checklistCont.style.display = 'none';
@@ -1516,27 +1632,6 @@
             });
 
             html += `
-                    <div class="section-title">Validación Final</div>
-                    <div class="inspector-section">
-                        <div class="form-group">
-                            <label>Nombre del Inspector</label>
-                            <div class="input-wrapper">
-                                <input type="text" placeholder="Nombre completo">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Cargo del Inspector</label>
-                            <div class="input-wrapper">
-                                <input type="text" placeholder="Cargo">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-top:10px">
-                        <label>Firma de Inspección</label>
-                        <div class="input-wrapper" style="height: 60px; justify-content: center; background: #fdfdfd; border: 1px dashed #bbb; border-radius: 8px;">
-                            <span style="color:#aaa; font-size: 11px;">[ Toque aquí para firmar digitalmente ]</span>
-                        </div>
-                    </div>
                 </div>
             `;
             checklistCont.innerHTML = html;
@@ -1571,28 +1666,6 @@
                     <button type="button" class="btn-agregar" style="width: 100%; margin: 10px 0 20px 0; background: #f0f7ff; color: #2980b9; border: 1px dashed #2980b9; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600;" onclick="addLightItem()">
                         <i class="ti ti-plus"></i> Agregar Luminaria
                     </button>
-
-                    <div class="section-title">Validación Final</div>
-                    <div class="inspector-section">
-                        <div class="form-group">
-                            <label>Nombre del Inspector</label>
-                            <div class="input-wrapper">
-                                <input type="text" placeholder="Nombre completo">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Cargo del Inspector</label>
-                            <div class="input-wrapper">
-                                <input type="text" placeholder="Cargo">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-top:10px">
-                        <label>Firma de Inspección</label>
-                        <div class="input-wrapper" style="height: 60px; justify-content: center; background: #fdfdfd; border: 1px dashed #bbb; border-radius: 8px;">
-                            <span style="color:#aaa; font-size: 11px;">[ Toque aquí para firmar digitalmente ]</span>
-                        </div>
-                    </div>
                 </div>
             `;
             checklistCont.innerHTML = html;
@@ -1661,6 +1734,149 @@
             container.insertAdjacentHTML('beforeend', itemHtml);
         }
 
+        function renderKitAntiderramesChecklist() {
+            const checklistCont = document.getElementById('checklist-area');
+            let html = `
+                <div class="modern-checklist">
+                    <div class="section-title">Ubicación del Kit</div>
+                    <div class="location-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;">
+                        <label class="location-item"><input type="checkbox"> Oficina</label>
+                        <label class="location-item"><input type="checkbox"> Proyecto / Servicio</label>
+                        <label class="location-item"><input type="checkbox"> Estación de Emergencia</label>
+                        <label class="location-item"><input type="checkbox"> Vehículo / Torre</label>
+                    </div>
+
+                    <div class="section-title">Elementos a Inspeccionar</div>
+                    <div class="kit-cards-container" style="display: flex; flex-direction: column; gap: 16px;">
+            `;
+
+            const KIT_ITEMS = [
+                { n: 1, name: "Cordón absorbente", cant: 2, und: "UND" },
+                { n: 2, name: "Paños absorbentes", cant: 5, und: "UND" },
+                { n: 3, name: "Bolsas rojas", cant: 2, und: "UND" },
+                { n: 4, name: "Guantes de nitrilo talla L", cant: 1, und: "PAR" },
+                { n: 5, name: "Bandeja antiderrame", cant: 1, und: "UND" },
+                { n: 6, name: "Maletín de kit antiderrame", cant: 1, und: "UND" },
+                { n: 7, name: "Traje descartable tyvek talla L", cant: 1, und: "UND" },
+                { n: 8, name: "Respirador desc. p/ vapores y gases", cant: 1, und: "UND" },
+                { n: 9, name: "Mascarillas para polvo KN95", cant: 2, und: "UND" },
+                { n: 10, name: "Lentes de seguridad claros", cant: 1, und: "UND" },
+                { n: 12, name: "Trapo industrial de colores", cant: 1, und: "KG" },
+                { n: 13, name: "Sacos blancos de 50 kg", cant: 2, und: "UND" },
+                { n: 14, name: "Cinta de peligro color rojo", cant: 10, und: "MET" }
+            ];
+
+            KIT_ITEMS.forEach((item) => {
+                html += `
+                    <div class="kit-card" style="background: #fff; border: 1px solid #eef0f5; border-radius: 12px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: transform 0.2s;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; border-bottom: 1px solid #f0f2f5; padding-bottom: 12px;">
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-weight: 800; color: #1a3a6e; font-size: 15px;">${item.n}. ${item.name}</span>
+                                <span style="font-size: 11px; color: #888; margin-top: 4px;">Referencia: ${item.und}</span>
+                            </div>
+                            <div style="display: flex; gap: 6px; background: #f8f9fa; padding: 4px; border-radius: 30px; border: 1px solid #eee;">
+                                <label style="display: flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; cursor: pointer; color: #27ae60;">
+                                    <input type="radio" name="state-${item.n}" value="B"> B
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; cursor: pointer; color: #e74c3c;">
+                                    <input type="radio" name="state-${item.n}" value="M"> M
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                            <div class="form-group" style="margin:0">
+                                <label style="font-size: 11px; font-weight: 600; color: #555;">Cantidad Hallada</label>
+                                <div class="input-wrapper" style="height: 36px; background: #fafbfc;"><input type="text" value="${item.cant}" style="font-weight: 600;"></div>
+                            </div>
+                            <div class="form-group" style="margin:0">
+                                <label style="font-size: 11px; font-weight: 600; color: #555;">Unidad</label>
+                                <div class="input-wrapper" style="height: 36px; background: #fafbfc;"><input type="text" value="${item.und}"></div>
+                            </div>
+                        </div>
+
+                        <div style="background: #fdfdfe; border: 1px solid #f0f4f8; padding: 12px; border-radius: 8px; width: 100%; overflow: hidden;">
+                            <label style="font-size: 10px; font-weight: 700; color: #2b63ff; text-transform: uppercase; margin-bottom: 8px; display: block;">Historial / Notas de Inspección (1-5)</label>
+                            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; width: 100%;">
+                                ${[1, 2, 3, 4, 5].map(i => `
+                                    <div style="min-width: 0;">
+                                        <div class="input-wrapper" style="height:32px; border-radius: 6px;"><input type="text" placeholder="${i}" style="font-size:10px; text-align:center; width: 100%;"></div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div></div>`;
+            checklistCont.innerHTML = html;
+        }
+
+        function setupKitSignatureStep() {
+            const step3 = document.getElementById('step-3');
+            const type = document.getElementById('modal-tipo-registro').value;
+            
+            if (type === 'Inspección de Kit Anti-derrame') {
+                step3.innerHTML = `
+                    <div class="section-title">Validación de las 5 Inspecciones</div>
+                    <p style="font-size: 11px; color: #888; margin-bottom: 20px;">Cada una de las 5 inspecciones registradas debe contar con su validación correspondiente.</p>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        ${[1, 2, 3, 4, 5].map(i => `
+                            <div style="background: #fff; border: 1px solid #eef0f5; border-radius: 12px; padding: 20px; border-left: 5px solid #2b63ff; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                    <div style="font-weight: 800; color: #1a3a6e; font-size: 13px;">INSPECCIÓN N° ${i}</div>
+                                    <div style="background: #eef2ff; color: #2b63ff; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700;">PENDIENTE</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nombre del Inspector</label>
+                                    <div class="input-wrapper"><input type="text" placeholder="Ej: Juan Pérez"></div>
+                                </div>
+                                <div class="form-row" style="margin-top: 15px;">
+                                    <div class="form-group" style="flex: 1;">
+                                        <label>Fecha</label>
+                                        <div class="input-wrapper"><input type="date"></div>
+                                    </div>
+                                    <div class="form-group" style="flex: 1.5;">
+                                        <label>Firma</label>
+                                        <div class="input-wrapper" style="height: 44px; cursor: pointer; background: #fff; border: 2px dashed #d1d9e6; justify-content: center; color: #2b63ff; font-size: 11px; font-weight: 600; border-radius: 8px;">
+                                            <i class="ti ti-pencil" style="margin-right: 6px;"></i> Firmar Registro ${i}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                // Default Step 3
+                step3.innerHTML = `
+                    <div class="section-title">Validación Final</div>
+                    <div class="inspector-section" style="grid-template-columns: 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Nombre del Inspector</label>
+                            <div class="input-wrapper"><input type="text" placeholder="Nombre completo" value="Carlos Ríos Chávez"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Cargo del Inspector</label>
+                            <div class="input-wrapper"><input type="text" placeholder="Cargo" value="Supervisor SSTMA"></div>
+                        </div>
+                    </div>
+                    <div class="section-title">Firma Digital</div>
+                    <div class="form-group" style="margin-top:10px">
+                        <label>Firma de Inspección</label>
+                        <div class="input-wrapper" style="height: 120px; flex-direction: column; justify-content: center; background: #fff; border: 2px dashed #2b63ff; border-radius: 8px; cursor: pointer;">
+                            <i class="ti ti-pencil" style="font-size: 30px; color: #2b63ff; margin-bottom: 10px;"></i>
+                            <span style="color:#2b63ff; font-size: 12px; font-weight: 600;">Haz clic o desliza para firmar</span>
+                        </div>
+                    </div>
+                    <div style="background: #fdf2f2; border: 1px solid #f8d7da; padding: 12px; border-radius: 6px; margin-top: 20px;">
+                        <p style="font-size: 11px; color: #a94442;"><strong>Aviso:</strong> Al guardar este registro, usted declara que la información proporcionada es verídica.</p>
+                    </div>
+                `;
+            }
+        }
+
         function renderExtinguishersChecklist() {
             const checklistCont = document.getElementById('checklist-area');
             let html = `
@@ -1683,21 +1899,6 @@
                         <i class="ti ti-plus"></i> Agregar Extintor
                     </button>
 
-                    <div class="section-title">Validación Final</div>
-                    <div class="inspector-section">
-                        <div class="form-group">
-                            <label>Nombre del Inspector</label>
-                            <div class="input-wrapper">
-                                <input type="text" placeholder="Nombre completo">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Cargo del Inspector</label>
-                            <div class="input-wrapper">
-                                <input type="text" placeholder="Cargo">
-                            </div>
-                        </div>
-                    </div>
                 </div>
             `;
             checklistCont.innerHTML = html;
@@ -1763,6 +1964,70 @@
         function closeModal() {
             document.getElementById('modal-registro').style.display = 'none';
         }
+
+        function updateModalSteps() {
+            // Update UI steps
+            document.querySelectorAll('.step').forEach((s, idx) => {
+                const stepNum = idx + 1;
+                s.classList.remove('active', 'completed');
+                if (stepNum === currentModalStep) s.classList.add('active');
+                if (stepNum < currentModalStep) s.classList.add('completed');
+            });
+
+            // Update content
+            document.querySelectorAll('.modal-step-content').forEach((c, idx) => {
+                const stepNum = idx + 1;
+                c.classList.toggle('active', stepNum === currentModalStep);
+            });
+
+            // Special handling for Step 3 (Signatures)
+            if (currentModalStep === 3) {
+                setupKitSignatureStep();
+            }
+
+            // Update footer buttons
+            const btnPrev = document.getElementById('modal-btn-prev');
+            const btnNext = document.getElementById('modal-btn-next');
+            const btnSave = document.getElementById('modal-btn-save');
+
+            if (currentModalStep === 1) {
+                btnPrev.style.display = 'none';
+                btnNext.style.display = 'flex';
+                btnSave.style.display = 'none';
+            } else if (currentModalStep === 2) {
+                btnPrev.style.display = 'flex';
+                btnNext.style.display = 'flex';
+                btnSave.style.display = 'none';
+                
+                // If no type selected, we should ideally disable Next, but let's keep it simple
+            } else if (currentModalStep === 3) {
+                btnPrev.style.display = 'flex';
+                btnNext.style.display = 'none';
+                btnSave.style.display = 'flex';
+            }
+        }
+
+        function nextModalStep() {
+            if (currentModalStep < 3) {
+                // Validation for Step 1
+                if (currentModalStep === 1) {
+                    const type = document.getElementById('modal-tipo-registro').value;
+                    if (!type) {
+                        alert('Por favor seleccione un Tipo de Registro');
+                        return;
+                    }
+                }
+                currentModalStep++;
+                updateModalSteps();
+            }
+        }
+
+        function prevModalStep() {
+            if (currentModalStep > 1) {
+                currentModalStep--;
+                updateModalSteps();
+            }
+        }
     </script>
     <!-- MODAL REGISTRO -->
     <div class="modal-overlay" id="modal-registro">
@@ -1771,46 +2036,115 @@
                 <h2 id="modal-title">Registro de Inspección General</h2>
                 <span style="cursor:pointer; font-size: 20px;" onclick="closeModal()">✕</span>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>N° Registro</label>
-                    <div class="input-wrapper disabled">
-                        <input type="text" value="INS-000062" readonly>
-                    </div>
-                    <span class="char-count">10 / 100</span>
+
+            <!-- STEPPER -->
+            <div class="stepper">
+                <div class="step active" id="st-1">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">General</div>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Fecha Inspección</label>
-                        <div class="input-wrapper">
-                            <input type="date" value="2026-05-07">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Hora Inspección</label>
-                        <div class="input-wrapper">
-                            <input type="time" value="05:39">
-                        </div>
-                    </div>
+                <div class="step" id="st-2">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Inspección</div>
                 </div>
-
-                <div class="form-group">
-                    <label>Tipo Registro</label>
-                    <div class="input-wrapper">
-                        <select id="modal-tipo-registro">
-                            <option value="">Tipo Registro</option>
-                        </select>
-                    </div>
+                <div class="step" id="st-3">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Firma</div>
                 </div>
-
-
-                <!-- AREA PARA EL CHECKLIST DINAMICO -->
-                <div id="checklist-area"></div>
             </div>
+
+            <div class="modal-body">
+                <!-- STEP 1: GENERAL DATA -->
+                <div class="modal-step-content active" id="step-1">
+                    <div class="form-group">
+                        <label>N° Registro</label>
+                        <div class="input-wrapper disabled">
+                            <input type="text" value="INS-000062" readonly>
+                        </div>
+                        <span class="char-count">10 / 100</span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Fecha Inspección</label>
+                            <div class="input-wrapper">
+                                <input type="date" value="2026-05-07">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Hora Inspección</label>
+                            <div class="input-wrapper">
+                                <input type="time" value="05:39">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo Registro</label>
+                        <div class="input-wrapper">
+                            <select id="modal-tipo-registro">
+                                <option value="">Tipo Registro</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 40px; text-align: center; color: #888;">
+                        <i class="ti ti-info-circle" style="font-size: 24px; display: block; margin-bottom: 10px;"></i>
+                        <p style="font-size: 12px;">Complete los datos generales y seleccione el tipo de registro para continuar con la inspección.</p>
+                    </div>
+                </div>
+
+                <!-- STEP 2: DYNAMIC CHECKLIST -->
+                <div class="modal-step-content" id="step-2">
+                    <!-- AREA PARA EL CHECKLIST DINAMICO -->
+                    <div id="checklist-area"></div>
+                </div>
+
+                <!-- STEP 3: VALIDATION AND SIGNATURE -->
+                <div class="modal-step-content" id="step-3">
+                    <div class="section-title">Validación Final</div>
+                    <div class="inspector-section" style="grid-template-columns: 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Nombre del Inspector</label>
+                            <div class="input-wrapper">
+                                <input type="text" placeholder="Nombre completo" value="Carlos Ríos Chávez">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Cargo del Inspector</label>
+                            <div class="input-wrapper">
+                                <input type="text" placeholder="Cargo" value="Supervisor SSTMA">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title">Firma Digital</div>
+                    <div class="form-group" style="margin-top:10px">
+                        <label>Firma de Inspección</label>
+                        <div class="input-wrapper" style="height: 120px; flex-direction: column; justify-content: center; background: #fff; border: 2px dashed #2b63ff; border-radius: 8px; cursor: pointer;">
+                            <i class="ti ti-pencil" style="font-size: 30px; color: #2b63ff; margin-bottom: 10px;"></i>
+                            <span style="color:#2b63ff; font-size: 12px; font-weight: 600;">Haz clic o desliza para firmar</span>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fdf2f2; border: 1px solid #f8d7da; padding: 12px; border-radius: 6px; margin-top: 20px;">
+                        <p style="font-size: 11px; color: #a94442;">
+                            <strong>Aviso:</strong> Al guardar este registro, usted declara que la información proporcionada es verídica y ha sido verificada en campo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
-                <button class="btn-save" onclick="closeModal()">Guardar</button>
+                <div style="flex: 1;"></div>
+                <button class="btn-nav btn-prev" id="modal-btn-prev" onclick="prevModalStep()" style="display:none;">
+                    <i class="ti ti-arrow-left"></i> Anterior
+                </button>
+                <button class="btn-nav btn-next" id="modal-btn-next" onclick="nextModalStep()">
+                    Siguiente <i class="ti ti-arrow-right"></i>
+                </button>
+                <button class="btn-save" id="modal-btn-save" onclick="closeModal()" style="display:none;">Guardar Registro</button>
             </div>
         </div>
     </div>
