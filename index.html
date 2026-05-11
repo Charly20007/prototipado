@@ -1186,6 +1186,46 @@
         .btn-next:hover {
             background: #1a4cdb;
         }
+        /* HAND TOOLS INTERACTION */
+        .state-selector label {
+            flex: 1;
+            cursor: pointer;
+            display: block;
+        }
+        .state-selector input[type="radio"] {
+            display: none !important;
+        }
+        .state-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 0;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 800;
+            border: 1px solid #edf2f7;
+            color: #a0aec0;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .state-selector input[type="radio"]:checked + .state-btn[data-val="C"] {
+            background: #27ae60 !important;
+            color: #fff !important;
+            border-color: #27ae60 !important;
+            box-shadow: 0 2px 4px rgba(39, 174, 96, 0.2);
+        }
+        .state-selector input[type="radio"]:checked + .state-btn[data-val="NC"] {
+            background: #e74c3c !important;
+            color: #fff !important;
+            border-color: #e74c3c !important;
+            box-shadow: 0 2px 4px rgba(231, 76, 60, 0.2);
+        }
+        .state-selector input[type="radio"]:checked + .state-btn[data-val="NA"] {
+            background: #718096 !important;
+            color: #fff !important;
+            border-color: #718096 !important;
+            box-shadow: 0 2px 4px rgba(113, 128, 150, 0.2);
+        }
     </style>
 
 </head>
@@ -1214,16 +1254,14 @@
                     <i class="ti ti-chevron-down chevron open" id="insp-chev" aria-hidden="true"></i>
                 </div>
                 <div class="nav-sub open" id="insp-sub">
-                    <div class="nav-sub-item" id="sub-seg" onclick="openInsp('seguridad')"><i class="ti ti-shield"
-                            aria-hidden="true"></i> Seguridad</div>
-                    <div class="nav-sub-item" id="sub-ma" onclick="openInsp('medio_ambiente')"><i class="ti ti-leaf"
-                            aria-hidden="true"></i> Medio Ambiente</div>
-                    <div class="nav-sub-item" id="sub-ind" onclick="openInsp('individual')"><i class="ti ti-user-check"
-                            aria-hidden="true"></i> Individual</div>
-                    <div class="nav-sub-item" id="sub-sst" onclick="openInsp('sst')"><i class="ti ti-building-hospital"
-                            aria-hidden="true"></i> Inspección SST</div>
-                    <div class="nav-sub-item" id="sub-sal" onclick="openInsp('salud')"><i
-                            class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Salud</div>
+                    <div class="nav-sub-item" id="sub-seg" onclick="openInsp('seguridad')"><i class="ti ti-shield"></i> Seguridad</div>
+                    <div class="nav-sub-item" id="sub-ma" onclick="openInsp('medio_ambiente')"><i class="ti ti-leaf"></i> Medio Ambiente</div>
+                    <div class="nav-sub-item" id="sub-sst" onclick="openInsp('sst')"><i class="ti ti-building-hospital"></i> Inspección SST</div>
+                    <div class="nav-sub-item" id="sub-sal" onclick="openInsp('salud')"><i class="ti ti-heart-rate-monitor"></i> Salud</div>
+                    <div class="nav-sub-item" id="sub-des" onclick="openInsp('desvios')"><i class="ti ti-alert-triangle"></i> Reporte de desvío</div>
+                    <div class="nav-sub-item" id="sub-sstma" onclick="openInsp('sstma')"><i class="ti ti-shield-check"></i> SSTMA</div>
+                    <div class="nav-sub-item" id="sub-eme" onclick="openInsp('emergencia')"><i class="ti ti-ambulance"></i> Equipo de Emergencia</div>
+                    <div class="nav-sub-item" id="sub-veh" onclick="openInsp('vehicular')"><i class="ti ti-truck-delivery"></i> Inspección Vehicular</div>
                 </div>
                 <div class="nav-item" onclick="goHome()"><i class="ti ti-alert-circle" aria-hidden="true"></i>
                     Incidentes</div>
@@ -1410,14 +1448,6 @@
                 rows: [
                     ['INS-000062', 'Inspección de Extintores', 'Operaciones', 'Almacén Central', 'Planeado', 'PROCESO', '07/05/2026', '05:39', 'Carlos Ríos Chavez'],
                     ['INS-000061', 'Inspección de Luces de emergencia', 'Mantenimiento', 'Taller Mecánico', 'No Planeado', 'CERRADO', '06/05/2026', '14:20', 'Juan Pérez Soto'],
-                    ['INS-000060', 'Inspección de Herramientas de Poder', 'Construcción', 'Frente de Obra', 'Planeado', 'PROCESO', '05/05/2026', '09:15', 'Ana Martínez L.'],
-                    ['INS-000059', 'Inspección de Extintores', 'Seguridad', 'Oficinas Administrativas', 'Planeado', 'CERRADO', '04/05/2026', '16:45', 'Ricardo Palma'],
-                    ['INS-000058', 'Inspección de Luces de emergencia', 'Logística', 'Patio de Maniobras', 'No Planeado', 'PROCESO', '03/05/2026', '22:10', 'Elena Guerra'],
-                    ['INS-000057', 'Inspección de Herramientas de Poder', 'Operaciones', 'Planta de Procesos', 'Planeado', 'CERRADO', '02/05/2026', '11:30', 'Marcos Ruíz'],
-                    ['INS-000053', 'Inspección de Botiquín', 'Gerencia', 'Enfermería', 'No Planeado', 'CERRADO', '25/02/2026', '17:27', 'Angie Solange Guillén'],
-                    ['INS-000052', 'Insp. Tableros Eléctricos', 'Operaciones', 'Subestación', 'No Planeado', 'CERRADO', '11/02/2026', '08:56', 'Xena Chuquillanqui'],
-                    ['INS-000051', 'Inspección de Extintores', 'Operaciones', 'Planta Principal', 'Planeado', 'CERRADO', '05/02/2026', '09:10', 'Carlos Ríos'],
-                    ['INS-000050', 'Inspección de Señalética', 'Gerencia', 'Pasillo General', 'Planeado', 'PROCESO', '01/02/2026', '11:30', 'Miguel Sánchez'],
                 ]
             },
             medio_ambiente: {
@@ -1425,42 +1455,48 @@
                 types: ['Inspección de Kit Anti-derrame'],
                 rows: [
                     ['IMA-000021', 'Inspección de Kit Anti-derrame', 'Operaciones', 'Área de Acopio', 'No Planeado', 'CERRADO', '28/04/2026', '09:00', 'Ana Torres Vega'],
-                    ['IMA-000020', 'Inspección de Kit Anti-derrame', 'Planta Sur', 'Canal de Descarga', 'Planeado', 'PROCESO', '20/04/2026', '10:15', 'Pedro Gómez León'],
-                    ['IMA-000019', 'Inspección de Kit Anti-derrame', 'Almacén Químico', 'Patio Trasero', 'No Planeado', 'PROCESO', '10/04/2026', '14:00', 'Luis Paredes Cruz'],
-                    ['IMA-000018', 'Inspección de Kit Anti-derrame', 'Gerencia', 'Oficinas', 'Planeado', 'CERRADO', '05/04/2026', '08:30', 'Ana Torres Vega'],
-                    ['IMA-000017', 'Inspección de Kit Anti-derrame', 'Operaciones', 'Chimenea 1', 'Planeado', 'CERRADO', '01/04/2026', '07:45', 'Carla Ruiz Díaz'],
-                ]
-            },
-            individual: {
-                title: 'Inspecciones Individuales', icon: '👤', color: '#2980b9',
-                types: ['Evaluación Desempeño SST', 'Revisión de Competencias', 'Chequeo Conductual'],
-                rows: [
-                    ['IIN-000015', 'Evaluación Desempeño SST', 'RRHH', 'Área Operativa', 'Planeado', 'CERRADO', '25/04/2026', '10:00', 'Luis Paredes Cruz'],
-                    ['IIN-000014', 'Revisión de Competencias', 'Operaciones', 'Planta', 'No Planeado', 'PROCESO', '18/04/2026', '11:30', 'Pedro Gómez León'],
-                    ['IIN-000013', 'Chequeo Conductual', 'Gerencia', 'Oficina Supervisor', 'Planeado', 'PROCESO', '12/04/2026', '09:15', 'Carla Ruiz Díaz'],
-                    ['IIN-000012', 'Evaluación EPP Personal', 'Operaciones', 'Campo', 'No Planeado', 'CERRADO', '08/04/2026', '14:00', 'Miguel Sánchez'],
                 ]
             },
             sst: {
                 title: 'Inspecciones SST', icon: '🏥', color: '#7d3c98',
-                types: ['Insp. Condiciones Laborales', 'Revisión de Ergonomía', 'Inspección de Fatiga'],
+                types: ['Inspeccion de Herramientas manuales'],
                 rows: [
-                    ['ISS-000031', 'Insp. Condiciones Laborales', 'Operaciones', 'Planta Principal', 'Planeado', 'CERRADO', '27/04/2026', '08:00', 'Carla Ruiz Díaz'],
-                    ['ISS-000030', 'Revisión de Ergonomía', 'Gerencia', 'Área Administrativa', 'No Planeado', 'PROCESO', '21/04/2026', '10:30', 'Ana Torres Vega'],
-                    ['ISS-000029', 'Inspección de Fatiga', 'Operaciones', 'Turno Noche', 'Planeado', 'PROCESO', '14/04/2026', '23:00', 'Luis Paredes Cruz'],
-                    ['ISS-000028', 'Control Psicosocial', 'RRHH', 'Sala de Descanso', 'Planeado', 'CERRADO', '07/04/2026', '09:00', 'Carla Ruiz Díaz'],
-                    ['ISS-000027', 'Insp. Carga Física', 'Operaciones', 'Almacén', 'No Planeado', 'PROCESO', '03/04/2026', '15:45', 'Pedro Gómez León'],
+                    ['ISS-000031', 'Inspeccion de Herramientas manuales', 'Operaciones', 'Planta Principal', 'Planeado', 'CERRADO', '27/04/2026', '08:00', 'Carla Ruiz Díaz'],
                 ]
             },
             salud: {
                 title: 'Inspecciones de Salud', icon: '❤️', color: '#c0392b',
-                types: ['Chequeo Auditivo', 'Control Enfermedades Ocup.', 'Insp. de Botiquines'],
+                types: ['Inspeccion de Mochila de Emergencia', 'Inspeccion de lavaojos', 'Inspeccion de Botiquin de Primeros Auxilios'],
                 rows: [
-                    ['ISA-000011', 'Chequeo Auditivo', 'Operaciones', 'Planta Ruidosa', 'Planeado', 'CERRADO', '26/04/2026', '08:30', 'Pedro Gómez León'],
-                    ['ISA-000010', 'Control Enfermedades Ocup.', 'RRHH', 'Clínica Interna', 'Planeado', 'PROCESO', '19/04/2026', '09:00', 'Ana Torres Vega'],
-                    ['ISA-000009', 'Insp. de Botiquines', 'Operaciones', 'Todos los Sectores', 'No Planeado', 'CERRADO', '11/04/2026', '14:20', 'Luis Paredes Cruz'],
-                    ['ISA-000008', 'Vigilancia Epidemiológica', 'Gerencia', 'Comedor', 'Planeado', 'PROCESO', '04/04/2026', '12:00', 'Carla Ruiz Díaz'],
-                    ['ISA-000007', 'Control Visual / Ergonómico', 'Gerencia', 'Oficina Admin', 'No Planeado', 'CERRADO', '28/03/2026', '10:00', 'Miguel Sánchez'],
+                    ['ISA-000011', 'Inspeccion de Mochila de Emergencia', 'Operaciones', 'Almacén', 'Planeado', 'CERRADO', '26/04/2026', '08:30', 'Pedro Gómez León'],
+                ]
+            },
+            desvios: {
+                title: 'Reporte de desvío', icon: '⚠️', color: '#e67e22',
+                types: ['Desvío de Seguridad', 'Desvío de Medio Ambiente', 'Desvío de Salud'],
+                rows: [
+                    ['IRD-000001', 'Desvío de Seguridad', 'Operaciones', 'Planta Principal', 'No Planeado', 'PROCESO', '07/05/2026', '08:45', 'Carlos Ríos Chávez'],
+                ]
+            },
+            sstma: {
+                title: 'Seguridad, Salud en el Trabajo y Medio Ambiente', icon: '🛡️', color: '#2b63ff',
+                types: ['Inspección de Herramientas de Poder', 'Inspeccion de Herramientas manuales', 'Inspección de EPP', 'Inspección de Áreas de Trabajo'],
+                rows: [
+                    ['ISM-000001', 'Inspección de EPP', 'Operaciones', 'Campo', 'Planeado', 'PROCESO', '07/05/2026', '09:00', 'Ana Martínez L.'],
+                ]
+            },
+            emergencia: {
+                title: 'Equipo de Seguridad o Emergencia', icon: '🚨', color: '#c0392b',
+                types: ['Inspección de Extintores', 'Inspección de Kit Anti-derrame', 'Inspeccion de lavaojos'],
+                rows: [
+                    ['EME-000001', 'Inspección de Extintores', 'Mantenimiento', 'Taller', 'Planeado', 'CERRADO', '07/05/2026', '11:00', 'Juan Pérez Soto'],
+                ]
+            },
+            vehicular: {
+                title: 'Inspección Vehicular Diaria', icon: '🚛', color: '#2c3e50',
+                types: ['Inspección Vehicular Diaria - Camioneta', 'Inspección Vehicular Diaria - Maquinaria Pesada'],
+                rows: [
+                    ['IVD-000001', 'Inspección Vehicular Diaria - Camioneta', 'Transporte', 'Garaje Central', 'Planeado', 'PROCESO', '07/05/2026', '06:00', 'Luis Paredes Cruz'],
                 ]
             }
         };
@@ -1469,7 +1505,7 @@
         let lightCounter = 0;
         let extCounter = 0;
         let currentModalStep = 1;
-        const subMap = { seguridad: 'seg', medio_ambiente: 'ma', individual: 'ind', sst: 'sst', salud: 'sal' };
+        const subMap = { seguridad: 'seg', medio_ambiente: 'ma', sst: 'sst', salud: 'sal', desvios: 'des', sstma: 'sstma', emergencia: 'eme', vehicular: 'veh' };
 
         function openInsp(key) {
             currentKey = key; currentPage = 1;
@@ -1517,6 +1553,7 @@
         function openModal() {
             const titleElem = document.getElementById('modal-title');
             const typeSelect = document.getElementById('modal-tipo-registro');
+            const typeGroup = document.getElementById('modal-type-group');
             const checklistCont = document.getElementById('checklist-area');
 
             checklistCont.style.display = 'none';
@@ -1524,13 +1561,16 @@
             lightCounter = 0; 
             extCounter = 0;
             currentModalStep = 1;
-            updateModalSteps();
+            
+            // Default 3 steps
+            document.getElementById('st-4').style.display = 'none';
+            document.getElementById('st-3-label').textContent = 'Firma';
 
             // Default options if no submodule is selected
             let options = ['Insp. Camilla de Emergencia', 'Inspección EPP', 'Insp. Kit Antiderrames'];
 
             if (currentKey && INSP_DATA[currentKey]) {
-                const baseTitle = INSP_DATA[currentKey].title.replace('Inspecciones de ', '').replace('Inspecciones ', '');
+                const baseTitle = INSP_DATA[currentKey].title;
                 titleElem.textContent = 'Registro de Inspección de ' + baseTitle;
 
                 if (INSP_DATA[currentKey].types) {
@@ -1545,12 +1585,49 @@
 
             typeSelect.onchange = handleTypeChange;
 
+            // Handle Desvios specifically
+            if (currentKey === 'desvios') {
+                typeGroup.style.display = 'none';
+                typeSelect.value = options[0]; 
+                renderDesviosChecklist();
+                checklistCont.style.display = 'block';
+            } else if (currentKey === 'vehicular') {
+                typeGroup.style.display = 'none';
+                typeSelect.value = options[0];
+                document.getElementById('st-4').style.display = 'flex';
+                document.getElementById('st-3-label').textContent = 'Inspección';
+                renderVehicularDriverData();
+                checklistCont.style.display = 'block';
+            } else if (currentKey === 'emergencia') {
+                typeGroup.style.display = 'none';
+                typeSelect.value = options[0];
+                document.getElementById('st-4').style.display = 'flex';
+                document.getElementById('st-2-label').textContent = 'Personal';
+                document.getElementById('st-3-label').textContent = 'Equipos';
+                renderEmergenciaPersonalData();
+                checklistCont.style.display = 'block';
+            } else {
+                typeGroup.style.display = 'block';
+                document.getElementById('st-2-label').textContent = 'Inspección';
+            }
+
+            updateModalSteps();
             document.getElementById('modal-registro').style.display = 'flex';
         }
 
         function handleTypeChange() {
             const type = this.value;
             const checklistCont = document.getElementById('checklist-area');
+            if (currentKey === 'desvios') {
+                renderDesviosChecklist();
+                checklistCont.style.display = 'block';
+                return;
+            }
+            if (currentKey === 'vehicular') {
+                renderVehicularDriverData();
+                checklistCont.style.display = 'block';
+                return;
+            }
             if (type === 'Inspección de Herramientas de Poder') {
                 renderToolsChecklist();
                 checklistCont.style.display = 'block';
@@ -1562,6 +1639,18 @@
                 checklistCont.style.display = 'block';
             } else if (type === 'Inspección de Kit Anti-derrame') {
                 renderKitAntiderramesChecklist();
+                checklistCont.style.display = 'block';
+            } else if (type === 'Inspeccion de Herramientas manuales') {
+                renderManualToolsChecklist();
+                checklistCont.style.display = 'block';
+            } else if (type === 'Inspeccion de Mochila de Emergencia') {
+                renderMochilaChecklist();
+                checklistCont.style.display = 'block';
+            } else if (type === 'Inspeccion de Botiquin de Primeros Auxilios') {
+                renderBotiquinChecklist();
+                checklistCont.style.display = 'block';
+            } else if (type === 'Inspeccion de lavaojos') {
+                renderLavaojosChecklist();
                 checklistCont.style.display = 'block';
             } else {
                 checklistCont.style.display = 'none';
@@ -1585,6 +1674,703 @@
             "Etiqueta de color del trimestre",
             "Almacenamiento adecuado"
         ];
+
+        var manualToolCount = 3;
+        function renderVehicularDriverData() {
+            const checklistCont = document.getElementById('checklist-area');
+            checklistCont.innerHTML = `
+                <div class="modern-checklist">
+                    <div class="section-title" style="background: #2c3e50; color: white; padding: 10px; border-radius: 6px; text-align: center; margin-bottom: 20px;">DATOS DEL CONDUCTOR Y VEHÍCULO</div>
+                    
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label>NOMBRE DEL CONDUCTOR</label>
+                            <div class="input-wrapper"><input type="text" placeholder="Nombre completo"></div>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>DNI</label>
+                            <div class="input-wrapper"><input type="text" placeholder="..."></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>ÁREA</label>
+                            <div class="input-wrapper"><input type="text" placeholder="..."></div>
+                        </div>
+                        <div class="form-group">
+                            <label>PROYECTO / SERVICIO</label>
+                            <div class="input-wrapper"><input type="text" placeholder="..."></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>TIPO DE VEHÍCULO</label>
+                            <div class="input-wrapper"><input type="text" placeholder="Ej: Camioneta 4x4"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>PLACA</label>
+                            <div class="input-wrapper"><input type="text" placeholder="..."></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>TURNO</label>
+                            <div class="input-wrapper" style="display: flex; gap: 5px; align-items: center; border: none; background: transparent; padding: 0;">
+                                <div class="input-wrapper" style="flex: 1;"><input type="text" placeholder="De"></div>
+                                <div class="input-wrapper" style="flex: 1;"><input type="text" placeholder="Hasta"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>KILOMETRAJE</label>
+                            <div class="input-wrapper"><input type="number" placeholder="0"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>FIRMA DEL CONDUCTOR</label>
+                        <div class="input-wrapper" style="height: 80px; border: 2px dashed #cbd5e0; justify-content: center; cursor: pointer;">
+                            <i class="ti ti-pencil" style="color: #718096; font-size: 24px;"></i>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEmergenciaPersonalData() {
+            const checklistCont = document.getElementById('checklist-area');
+            checklistCont.innerHTML = `
+                <div class="modern-checklist">
+                    <div class="section-title" style="background: #c0392b; color: white; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 25px; font-weight: 800;">DATOS DEL TRABAJADOR / RECEPTOR</div>
+                    
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="color: #c0392b; font-weight: 700;">TIPO DE EQUIPO ENTREGADO</label>
+                        <div style="display: flex; gap: 15px; margin-top: 10px;">
+                            <label style="flex: 1; padding: 12px; border: 2px solid #eee; border-radius: 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.3s;">
+                                <input type="radio" name="tipo_entrega" value="EPP" checked> <span style="font-size: 12px; font-weight: 600;">EQUIPO DE PROTECCIÓN PERSONAL</span>
+                            </label>
+                            <label style="flex: 1; padding: 12px; border: 2px solid #eee; border-radius: 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.3s;">
+                                <input type="radio" name="tipo_entrega" value="EME"> <span style="font-size: 12px; font-weight: 600;">EQUIPO DE EMERGENCIA</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>APELLIDOS Y NOMBRES</label>
+                        <div class="input-wrapper"><input type="text" placeholder="Ej: Juan Pérez Soto"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>DOCUMENTO DE IDENTIDAD (DNI)</label>
+                            <div class="input-wrapper"><input type="text" placeholder="..."></div>
+                        </div>
+                        <div class="form-group">
+                            <label>ÁREA</label>
+                            <div class="input-wrapper"><input type="text" placeholder="..."></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>PUESTO DE TRABAJO</label>
+                        <div class="input-wrapper"><input type="text" placeholder="..."></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEmergenciaEquipmentTable() {
+            const container = document.getElementById('checklist-area-step3');
+            container.innerHTML = `
+                <div class="modern-checklist">
+                    <div class="section-title" style="background: #c0392b; color: white; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 15px; font-weight: 800;">REGISTRO DE EQUIPOS ENTREGADOS</div>
+                    
+                    <p style="font-size: 11px; color: #666; margin-bottom: 15px; text-align: center;">Añada los equipos y cantidades correspondientes a la entrega actual.</p>
+
+                    <div id="emergencia-items-container" style="display: flex; flex-direction: column; gap: 12px;">
+                        <!-- Rows will be added here -->
+                    </div>
+
+                    <button type="button" onclick="addEmergenciaRow()" class="btn-secondary" style="width: 100%; margin-top: 15px; border: 2px dashed #c0392b; color: #c0392b; background: #fff5f5; border-radius: 12px; height: 45px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;">
+                        <i class="ti ti-plus"></i> Añadir Equipo / EPP
+                    </button>
+                </div>
+            `;
+            // Add first row by default
+            addEmergenciaRow();
+        }
+
+        function addEmergenciaRow() {
+            const container = document.getElementById('emergencia-items-container');
+            if(!container) return;
+            const rowCount = container.children.length + 1;
+            const div = document.createElement('div');
+            div.className = 'kit-card';
+            div.style = 'padding: 15px; border: 1px solid #eee; border-left: 4px solid #c0392b; background: #fdfdfd;';
+            div.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="background: #c0392b; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 800;">ITEM ${rowCount}</span>
+                    <i class="ti ti-trash" style="color: #e74c3c; cursor: pointer;" onclick="this.parentElement.parentElement.remove()"></i>
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label style="font-size: 10px;">DESCRIPCIÓN DEL EQUIPO Y TALLA</label>
+                    <div class="input-wrapper"><input type="text" placeholder="Ej: Casco de Seguridad - Talla M"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label style="font-size: 10px;">CANTIDAD</label>
+                        <div class="input-wrapper"><input type="number" value="1"></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size: 10px;">FECHA ENTREGA</label>
+                        <div class="input-wrapper"><input type="date" value="${new Date().toISOString().split('T')[0]}"></div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 10px; align-items: flex-end;">
+                    <div class="form-group" style="flex: 1;">
+                        <label style="font-size: 10px;">FECHA RENOVACIÓN (PROX.)</label>
+                        <div class="input-wrapper"><input type="date"></div>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label style="font-size: 10px;">FIRMA INDIVIDUAL</label>
+                        <div class="input-wrapper" style="height: 40px; border: 1px dashed #c0392b; justify-content: center; cursor: pointer; background: #fff;">
+                            <i class="ti ti-pencil" style="color: #c0392b; font-size: 14px;"></i>
+                            <span style="font-size: 9px; color: #c0392b; margin-left: 5px;">Firmar Item</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        function renderVehicularChecklist() {
+            const container = document.getElementById('checklist-area-step3');
+            const items = [
+                "Documentos del vehículo (tarjeta de propiedad, SOAT, RTV, etc)",
+                "Tarjeta de habilitación Vehicular",
+                "Funcionamiento general del motor",
+                "Nivel aceite, refrigerante, líquido de freno, hidrolina",
+                "Evaluación de fajas de accesorios, bornes de batería / cobertor",
+                "Combustible / indicadores de niveles",
+                "Freno servicio / emergencia (fugas líquidos - estado)",
+                "Derrames de líquidos (especificar)",
+                "Evaluación del sistema de dirección",
+                "Neumáticos delanteros / posterior. Neumáticos de repuesto",
+                "Claxon, Velocímetro (estado), Equipo de sonido, parlantes",
+                "Chapas de puerta y manijas int. y ext. de puertas",
+                "Cinturón de seguridad (Piloto, Copiloto y pasajeros)",
+                "Espejo retrovisor izquierdo / derecho / retrovisor central",
+                "Parabrisas delantero / posterior - Limpiaparabrisas",
+                "Equipo sonoro de retroceso",
+                "Parachoque delantero / posterior",
+                "Pintura y estado de cabina, chasis y Parachoques",
+                "Seguro de capot",
+                "Chevrones (estado)",
+                "Conos de seguridad",
+                "Extintor (estado)",
+                "Botiquín de primeros auxilios, Kit de antiderrame",
+                "Caja de herramientas (gata, llave de rueda, seguro)",
+                "Luces delanteras - altas / bajas. Luces direccionales delanteras",
+                "Luces de emergencia / retroceso (estado)",
+                "Luces de instrumento / indicador de niveles",
+                "Luz de salón de cabina / luz de placa",
+                "Faros perimetrales / flecha (estado)",
+                "Circulinas / Barra led"
+            ];
+
+            let html = `
+                <div class="modern-checklist">
+                    <div class="section-title" style="background: #2c3e50; color: white; padding: 10px; border-radius: 6px; text-align: center; margin-bottom: 20px;">CHECKLIST DE INSPECCIÓN</div>
+                    <div class="checklist-legend" style="margin-bottom: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                        <div class="legend-item" style="justify-content: center; background: #f0fff4; border: 1px solid #c6f6d5; padding: 8px; border-radius: 8px;">
+                            <span class="legend-badge c" style="background:#27ae60; width: 18px; height: 18px; font-size: 9px;">C</span> Conforme
+                        </div>
+                        <div class="legend-item" style="justify-content: center; background: #fff5f5; border: 1px solid #fed7d7; padding: 8px; border-radius: 8px;">
+                            <span class="legend-badge nc" style="background:#e74c3c; width: 18px; height: 18px; font-size: 9px;">NC</span> No Conforme
+                        </div>
+                        <div class="legend-item" style="justify-content: center; background: #f7fafc; border: 1px solid #edf2f7; padding: 8px; border-radius: 8px;">
+                            <span class="legend-badge na" style="background:#718096; width: 18px; height: 18px; font-size: 9px;">NA</span> No Aplica
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        ${items.map((item, i) => `
+                            <div class="kit-card" style="padding: 12px; border-radius: 10px; border: 1px solid #eef0f5; background: #fff;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 15px;">
+                                    <div style="font-size: 12px; color: #1a3a6e; font-weight: 600; line-height: 1.4; flex: 1;">
+                                        <span style="color: #2c3e50; font-weight: 800; margin-right: 5px;">${i + 1}.</span> ${item}
+                                    </div>
+                                    <div class="status-selector" style="flex-shrink: 0;">
+                                        <label class="status-btn c"><input type="radio" name="item-${i}" value="C"><span>C</span></label>
+                                        <label class="status-btn nc"><input type="radio" name="item-${i}" value="NC"><span>NC</span></label>
+                                        <label class="status-btn na"><input type="radio" name="item-${i}" value="NA"><span>NA</span></label>
+                                    </div>
+                                </div>
+                                <div class="input-wrapper" style="margin-top: 10px; height: 32px; background: #f8fafc;">
+                                    <input type="text" placeholder="Observación..." style="font-size: 11px;">
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="section-title" style="background: #34495e; color: white; padding: 10px; border-radius: 6px; text-align: center; margin: 25px 0 15px; font-size: 11px;">SOLO EN CASO DE USO DE AMORTIGUADOR DE IMPACTO</div>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        ${["Neumáticos, tuercas, pernos, tapas (estado)", "Estabilizador", "Luces perimetrales y flecha (estado)", "Chasis, pernos, y cables de conexiones", "Pin de acople, pasador, y puntos de anclaje"].map((item, i) => `
+                            <div class="kit-card" style="padding: 10px; border: 1px solid #eef0f5;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                                    <div style="font-size: 11px; color: #1a3a6e; flex: 1;">${item}</div>
+                                    <div class="status-selector">
+                                        <label class="status-btn c"><input type="radio" name="amort-${i}" value="C"><span>C</span></label>
+                                        <label class="status-btn nc"><input type="radio" name="amort-${i}" value="NC"><span>NC</span></label>
+                                        <label class="status-btn na"><input type="radio" name="amort-${i}" value="NA"><span>NA</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div style="background: #e74c3c; color: white; padding: 12px; border-radius: 8px; margin-top: 25px; font-size: 11px; font-weight: 700; text-align: center; line-height: 1.4;">
+                        Si se detecta alguna condición peligrosa que afecte las operaciones, se debe llenar el formato de DESVÍO DE CONDICIONES DE SEGURIDAD y comunique de inmediato al encargado de Equipos.
+                    </div>
+
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>Descripción ampliada de Desvío de Condiciones de Seguridad:</label>
+                        <div class="input-wrapper" style="height: 60px;">
+                            <textarea style="width: 100%; height: 100%; border: none; padding: 8px; font-size: 12px; outline: none; background: transparent;" placeholder="..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        function renderDesviosChecklist() {
+            const checklistCont = document.getElementById('checklist-area');
+            checklistCont.innerHTML = `
+                <div class="modern-checklist">
+                    <div class="section-title" style="background: #e74c3c; color: white; padding: 10px; border-radius: 6px; text-align: center; margin-bottom: 20px;">ÁREA INSPECCIONADA</div>
+                    
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label>PROYECTO / SERVICIO / INSTALACIÓN</label>
+                            <div class="input-wrapper"><input type="text" placeholder="..."></div>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>FECHA</label>
+                            <div class="input-wrapper"><input type="date" value="2026-05-07"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>FRENTE DE TRABAJO</label>
+                            <div class="input-wrapper"><input type="text" placeholder="..."></div>
+                        </div>
+                        <div class="form-group">
+                            <label>ACTIVIDAD</label>
+                            <div class="input-wrapper"><input type="text" placeholder="..."></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="background: #f0f4ff; padding: 15px; border-radius: 8px; border: 1px solid #d1d9e6;">
+                        <label style="color: #1a3a6e; font-weight: 800; font-size: 11px; margin-bottom: 10px;">TIPO DE DESVÍO</label>
+                        <div style="display: flex; gap: 20px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #1a3a6e; cursor: pointer;">
+                                <input type="checkbox"> SEGURIDAD
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #1a3a6e; cursor: pointer;">
+                                <input type="checkbox"> SALUD
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #1a3a6e; cursor: pointer;">
+                                <input type="checkbox"> MEDIO AMBIENTE
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>DESCRIPCIÓN DEL DESVÍO</label>
+                        <div class="input-wrapper" style="height: 100px;">
+                            <textarea style="width: 100%; height: 100%; border: none; padding: 10px; font-size: 13px; outline: none; background: transparent;" placeholder="Describa el desvío encontrado..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="margin-top: 15px;">
+                        <div class="form-group" style="flex: 2;">
+                            <label>RESPONSABLE / SUPERVISOR DE LA ACTIVIDAD</label>
+                            <div class="input-wrapper"><input type="text" placeholder="Nombre completo"></div>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>FIRMA</label>
+                            <div class="input-wrapper" style="height: 44px; border: 2px dashed #cbd5e0; justify-content: center; cursor: pointer;">
+                                <i class="ti ti-pencil" style="color: #718096;"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-title" style="background: #e74c3c; color: white; padding: 10px; border-radius: 6px; text-align: center; margin: 25px 0 15px;">ACCIONES INMEDIATAS</div>
+                    <div class="form-group">
+                        <div class="input-wrapper" style="height: 80px;">
+                            <textarea style="width: 100%; height: 100%; border: none; padding: 10px; font-size: 13px; outline: none; background: transparent;" placeholder="Acciones tomadas en el momento..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="section-title" style="background: #e74c3c; color: white; padding: 10px; border-radius: 6px; text-align: center; margin: 25px 0 15px;">ACCIONES CORRECTIVAS</div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        ${[1, 2, 3, 4, 5].map(i => `
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <div style="background: #e74c3c; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0;">${i}</div>
+                                <div class="input-wrapper" style="flex: 1; height: 38px;"><input type="text" placeholder="Acción correctiva ${i}..."></div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div style="background: #f0f4ff; border: 1px solid #d1d9e6; border-radius: 10px; padding: 15px; margin-top: 25px;">
+                        <div class="form-row">
+                            <div class="form-group" style="flex: 2;">
+                                <label style="font-weight: 800;">PLAZO MÁXIMO PARA LEVANTAMIENTO</label>
+                                <div class="input-wrapper"><input type="text" placeholder="Detalle el plazo..."></div>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>INMEDIATO</label>
+                                <div class="input-wrapper" style="justify-content: center;"><input type="checkbox" style="width: 20px; height: 20px;"></div>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label># DE DÍAS</label>
+                                <div class="input-wrapper"><input type="number" placeholder="0"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row" style="margin-top: 15px; border-top: 1px solid #d1d9e6; padding-top: 15px;">
+                            <div class="form-group" style="flex: 2;">
+                                <label>PERSONAL DE SSTMA</label>
+                                <div class="input-wrapper"><input type="text" placeholder="Nombre completo" value="Carlos Ríos Chávez"></div>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>FIRMA</label>
+                                <div class="input-wrapper" style="height: 44px; border: 2px dashed #1a3a6e; justify-content: center; cursor: pointer; background: #fff;">
+                                    <i class="ti ti-pencil" style="color: #1a3a6e;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderManualToolsChecklist() {
+            manualToolCount = 3;
+            const checklistCont = document.getElementById('checklist-area');
+            let html = `
+                <div class="modern-checklist">
+                    <div class="section-title">Datos de la Inspección</div>
+                    <div class="form-group">
+                        <label>Proyecto / Servicio / Instalación</label>
+                        <div class="input-wrapper">
+                            <input type="text" placeholder="Ej: Mantenimiento Preventivo - Línea A">
+                        </div>
+                    </div>
+
+                    <div class="section-title">Herramientas a Inspeccionar</div>
+                    <div class="checklist-legend" style="margin-bottom: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                        <div class="legend-item" style="justify-content: center; background: #f0fff4; border: 1px solid #c6f6d5; padding: 8px; border-radius: 8px;">
+                            <span class="legend-badge c" style="background:#27ae60; width: 18px; height: 18px; font-size: 9px;">C</span> Conforme
+                        </div>
+                        <div class="legend-item" style="justify-content: center; background: #fff5f5; border: 1px solid #fed7d7; padding: 8px; border-radius: 8px;">
+                            <span class="legend-badge nc" style="background:#e74c3c; width: 18px; height: 18px; font-size: 9px;">NC</span> No Conforme
+                        </div>
+                        <div class="legend-item" style="justify-content: center; background: #f7fafc; border: 1px solid #edf2f7; padding: 8px; border-radius: 8px;">
+                            <span class="legend-badge na" style="background:#718096; width: 18px; height: 18px; font-size: 9px;">NA</span> No Aplica
+                        </div>
+                    </div>
+
+                    <div id="tools-container" style="display: flex; flex-direction: column; gap: 20px;">
+            `;
+
+            for (let i = 1; i <= manualToolCount; i++) {
+                html += generateToolCardHtml(i);
+            }
+
+            html += `
+                        <button type="button" onclick="addManualTool()" class="btn-secondary" style="width: 100%; margin-top: 10px; border-style: dashed; background: #f8fafc; color: #7d3c98; cursor: pointer; height: 45px; font-weight: 700; border: 2px dashed #cbd5e0; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="ti ti-plus"></i> Añadir otra herramienta
+                        </button>
+                    </div>
+                </div>
+            `;
+            checklistCont.innerHTML = html;
+        }
+
+        function generateToolCardHtml(i) {
+            const CHECKPOINTS = [
+                "Mango", "Cuñas / Seguros", "Material", "Filo", "Cabeza / Extremo",
+                "Hoja o Boca", "Tornillo de Sujeción", "Aislamiento", "Quijadas", "Estado en General"
+            ];
+
+            return `
+                <div class="kit-card tool-item-card" style="background: #fff; border: 1px solid #eef0f5; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+                    <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #f0f2f5; padding-bottom: 12px;">
+                        <div style="background: #7d3c98; color: #fff; width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px;">${i}</div>
+                        <div class="input-wrapper" style="flex: 1; height: 38px;"><input type="text" placeholder="Nombre de la Herramienta ${i}"></div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        ${CHECKPOINTS.map((cp, cpIdx) => `
+                            <div style="background: #fafbfc; border: 1px solid #f0f2f5; padding: 10px; border-radius: 10px;">
+                                <label style="font-size: 10px; font-weight: 700; color: #4a5568; display: block; margin-bottom: 8px; text-transform: uppercase;">${cp}</label>
+                                <div class="state-selector" style="display: flex; gap: 4px; background: #fff; padding: 2px; border-radius: 6px; border: 1px solid #edf2f7;">
+                                    ${['C', 'NC', 'NA'].map(val => `
+                                        <label>
+                                            <input type="radio" name="tool-${i}-cp-${cpIdx}" value="${val}"> 
+                                            <span class="state-btn" data-val="${val}">${val}</span>
+                                        </label>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label style="font-size: 11px;">Observaciones</label>
+                        <div class="input-wrapper"><input type="text" placeholder="Detalles o hallazgos..."></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.addManualTool = function() {
+            manualToolCount++;
+            const container = document.getElementById('tools-container');
+            const addButton = container.querySelector('button');
+            
+            const temp = document.createElement('div');
+            temp.innerHTML = generateToolCardHtml(manualToolCount);
+            container.insertBefore(temp.firstElementChild, addButton);
+        }
+
+        function renderMochilaChecklist() {
+            const checklistCont = document.getElementById('checklist-area');
+            let html = `
+                <div class="modern-checklist">
+                    <div class="section-title">Identificación de Mochila</div>
+                    <div class="form-group">
+                        <label>Especificar Ubicación Exacta de Mochila</label>
+                        <div class="input-wrapper">
+                            <input type="text" placeholder="Ej: Punto de Encuentro 1 / Almacén">
+                        </div>
+                    </div>
+
+                    <div class="section-title">Elementos de la Mochila</div>
+                    <div class="mochila-cards-container" style="display: flex; flex-direction: column; gap: 16px;">
+            `;
+
+            const MOCHILA_ITEMS = [
+                { n: "ALCOHOL EN GEL", p: "Frasco (mínimo 200ml)", c: "1" },
+                { n: "ALCOHOL MEDICINAL", p: "Frasco 120 ml", c: "1" },
+                { n: "AGUA OXIGENADA", p: "Frasco 120 ml", c: "1" },
+                { n: "AGUA DE MESA", p: "Frasco", c: "1" },
+                { n: "ALGODÓN HIDRÓFILO", p: "Paquete", c: "1" },
+                { n: "COLLARIN CERVICAL", p: "Unidad", c: "1" },
+                { n: "CURITAS (venditas adhesivas)", p: "Unidad", c: "10" },
+                { n: "ESPARADRAPO HIPOALERGÉNICO", p: "Unidad", c: "1" },
+                { n: "GUANTES DE ATENCIÓN (Nitrilo/látex)", p: "Pares", c: "2" },
+                { n: "PAPEL HIGIÉNICO", p: "Unidad", c: "1" },
+                { n: "LIBRETA DE NOTAS CON LAPICERO", p: "Unidad", c: "1" },
+                { n: "LINTERNA", p: "Unidad", c: "1" },
+                { n: "MANTA ALUMINIZADA DE EMERGENCIA", p: "Unidad", c: "1" },
+                { n: "PILAS AA", p: "Unidad", c: "3" },
+                { n: "SILBATO", p: "Unidad", c: "1" },
+                { n: "TIJERA DE TRAUMA", p: "Unidad", c: "1" },
+                { n: "TORNIQUETE", p: "Unidad", c: "1" }
+            ];
+
+            MOCHILA_ITEMS.forEach((item, idx) => {
+                html += `
+                    <div class="kit-card" style="background: #fff; border: 1px solid #eef0f5; border-radius: 12px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; border-bottom: 1px solid #f0f2f5; padding-bottom: 10px;">
+                            <div style="display: flex; flex-direction: column; flex: 1;">
+                                <span style="font-weight: 800; color: #1a3a6e; font-size: 14px;">${item.n}</span>
+                                <span style="font-size: 11px; color: #666; margin-top: 4px;">Presentación: <b>${item.p}</b></span>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;">
+                            <div class="form-group" style="margin:0">
+                                <label style="font-size: 11px; font-weight: 600; color: #555;">Fecha Vencimiento</label>
+                                <div class="input-wrapper" style="height: 36px; background: #fafbfc;"><input type="text" placeholder="MM/AAAA"></div>
+                            </div>
+                            <div class="form-group" style="margin:0">
+                                <label style="font-size: 11px; font-weight: 600; color: #555;">Cantidad Requerida</label>
+                                <div class="input-wrapper" style="height: 36px; background: #fafbfc;"><input type="text" value="${item.c}"></div>
+                            </div>
+                        </div>
+
+                        <div style="background: #fdfdfe; border: 1px solid #f0f4f8; padding: 12px; border-radius: 8px; width: 100%;">
+                            <label style="font-size: 9px; font-weight: 700; color: #1a6b2a; text-transform: uppercase; margin-bottom: 8px; display: block;">Inspecciones Periódicas (1-4)</label>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 100%;">
+                                ${[1, 2, 3, 4].map(i => `
+                                    <div style="min-width: 0;">
+                                        <div class="input-wrapper" style="height:30px; border-radius: 4px; border-color: #f1f4f8;"><input type="text" placeholder="${i}" style="font-size:10px; text-align:center; width: 100%; padding: 0;"></div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    <div style="background: #f8f9fa; border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                        <span style="font-weight: 700; font-size: 12px; display: block; margin-bottom: 8px; color: #444;">INSTRUCCIONES</span>
+                        <ul style="font-size: 10.5px; color: #666; margin-left: 15px; padding: 0; line-height: 1.5;">
+                            <li>La inspección debe ser realizada por el Asistente SSTMA.</li>
+                            <li>En caso de emergencia con uso de la mochila, SE DEBE INFORMAR A SSTMA.</li>
+                            <li>Insumos contaminados con fluidos deben ir a Bolsa de Residuos Contaminados.</li>
+                            <li>Uso ESTRICTO para eventos laborales.</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            checklistCont.innerHTML = html;
+        }
+
+        function renderBotiquinChecklist() {
+            const checklistCont = document.getElementById('checklist-area');
+            let html = `
+                <div class="modern-checklist">
+                    <div class="section-title">Identificación de Botiquín</div>
+                    <div class="form-group">
+                        <label>Especificar Ubicación Exacta de Botiquín</label>
+                        <div class="input-wrapper">
+                            <input type="text" placeholder="Ej: Pasillo Administrativo / Área de Producción">
+                        </div>
+                    </div>
+
+                    <div class="section-title">Elementos del Botiquín</div>
+                    <div class="botiquin-cards-container" style="display: flex; flex-direction: column; gap: 16px;">
+            `;
+
+            const BOTIQUIN_ITEMS = [
+                { n: "AGUA OXIGENADA", p: "Frasco 120 ml", c: "1" },
+                { n: "ALCOHOL MEDICINAL", p: "Frasco 120 ml", c: "1" },
+                { n: "ALGODÓN", p: "Paquete", c: "1" },
+                { n: "BOLSA DE RESIDUOS CONTAMINADOS", p: "Unidad", c: "1" },
+                { n: "CURITAS (venditas adhesivas)", p: "Unidad", c: "10" },
+                { n: "ESPARADRAPO HIPOALERGÉNICO", p: "Unidad", c: "1" },
+                { n: "GASAS ESTÉRILES", p: "Paquete (10x10cm)", c: "1" },
+                { n: "VENDA ELÁSTICA", p: "2 Pulgadas", c: "1" },
+                { n: "VENDA ELÁSTICA", p: "4 Pulgadas", c: "1" },
+                { n: "VENDA ELÁSTICA", p: "6 Pulgadas", c: "1" },
+                { n: "GUANTES DE ATENCIÓN (Nitrilo/látex)", p: "Pares", c: "2" },
+                { n: "TIJERA DE TRAUMA", p: "Unidad", c: "1" },
+                { n: "APÓSITOS", p: "Unidad", c: "2" }
+            ];
+
+            BOTIQUIN_ITEMS.forEach((item, idx) => {
+                html += `
+                    <div class="kit-card" style="background: #fff; border: 1px solid #eef0f5; border-radius: 12px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; border-bottom: 1px solid #f0f2f5; padding-bottom: 10px;">
+                            <div style="display: flex; flex-direction: column; flex: 1;">
+                                <span style="font-weight: 800; color: #1a3a6e; font-size: 14px;">${item.n}</span>
+                                <span style="font-size: 11px; color: #666; margin-top: 4px;">Presentación: <b>${item.p}</b></span>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;">
+                            <div class="form-group" style="margin:0">
+                                <label style="font-size: 11px; font-weight: 600; color: #555;">Fecha Vencimiento</label>
+                                <div class="input-wrapper" style="height: 36px; background: #fafbfc;"><input type="text" placeholder="MM/AAAA"></div>
+                            </div>
+                            <div class="form-group" style="margin:0">
+                                <label style="font-size: 11px; font-weight: 600; color: #555;">Cantidad Requerida</label>
+                                <div class="input-wrapper" style="height: 36px; background: #fafbfc;"><input type="text" value="${item.c}"></div>
+                            </div>
+                        </div>
+
+                        <div style="background: #fdfdfe; border: 1px solid #f0f4f8; padding: 12px; border-radius: 8px; width: 100%;">
+                            <label style="font-size: 9px; font-weight: 700; color: #c0392b; text-transform: uppercase; margin-bottom: 8px; display: block;">Inspecciones Periódicas (1-4)</label>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 100%;">
+                                ${[1, 2, 3, 4].map(i => `
+                                    <div style="min-width: 0;">
+                                        <div class="input-wrapper" style="height:30px; border-radius: 4px; border-color: #f1f4f8;"><input type="text" placeholder="${i}" style="font-size:10px; text-align:center; width: 100%; padding: 0;"></div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    <div style="background: #f8f9fa; border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                        <span style="font-weight: 700; font-size: 12px; display: block; margin-bottom: 8px; color: #444;">INSTRUCCIONES</span>
+                        <ul style="font-size: 10.5px; color: #666; margin-left: 15px; padding: 0; line-height: 1.5;">
+                            <li>La inspección debe ser realizada por el Asistente SSTMA.</li>
+                            <li>En caso de emergencia con uso de insumos, SE DEBE INFORMAR A SSTMA.</li>
+                            <li>Insumos contaminados con fluidos deben ir a Bolsa de Residuos Contaminados.</li>
+                            <li>Uso ESTRICTO para eventos laborales.</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            checklistCont.innerHTML = html;
+        }
+
+        function renderLavaojosChecklist() {
+            const checklistCont = document.getElementById('checklist-area');
+            let html = `
+                <div class="modern-checklist">
+                    <div class="section-title">Identificación de Lavaojos</div>
+                    <div class="form-group">
+                        <label>Especificar Ubicación Exacta de Lavaojos</label>
+                        <div class="input-wrapper">
+                            <input type="text" placeholder="Ej: Laboratorio Central / Área de Reactivos">
+                        </div>
+                    </div>
+
+                    <div class="section-title">Ítems Evaluados</div>
+                    <div class="lavaojos-cards-container" style="display: flex; flex-direction: column; gap: 16px;">
+            `;
+
+            const LAVAOJOS_ITEMS = [
+                "Señalización de alta visibilidad",
+                "Presión de salida de agua adecuada",
+                "Color de agua - transparente",
+                "Flujo de agua se activa rápido",
+                "Los rociadores están protegidos contra contaminantes",
+                "Nivel de agua más de 10 litros",
+                "La temperatura del agua está tibia",
+                "Ubicación adecuada",
+                "Fecha de colocación del aditivo desinfectante",
+                "Fecha de cambio de agua (por uso o por fin de vigencia del desinfectante)"
+            ];
+
+            LAVAOJOS_ITEMS.forEach((item, idx) => {
+                html += `
+                    <div class="kit-card" style="background: #fff; border: 1px solid #eef0f5; border-radius: 12px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; border-bottom: 1px solid #f0f2f5; padding-bottom: 10px;">
+                            <div style="display: flex; flex-direction: column; flex: 1;">
+                                <span style="font-weight: 800; color: #1a3a6e; font-size: 14px;">${idx + 1}. ${item}</span>
+                            </div>
+                        </div>
+
+                        <div style="background: #fdfdfe; border: 1px solid #f0f4f8; padding: 12px; border-radius: 8px; width: 100%;">
+                            <label style="font-size: 9px; font-weight: 700; color: #2b63ff; text-transform: uppercase; margin-bottom: 8px; display: block;">Inspecciones (1-7)</label>
+                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%;">
+                                ${[1, 2, 3, 4, 5, 6, 7].map(i => `
+                                    <div style="min-width: 0;">
+                                        <div class="input-wrapper" style="height:28px; border-radius: 4px; border-color: #e0e6ed;"><input type="text" placeholder="${i}" style="font-size:10px; text-align:center; width: 100%; padding: 0;"></div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div></div>`;
+            checklistCont.innerHTML = html;
+        }
 
         function renderToolsChecklist() {
             const checklistCont = document.getElementById('checklist-area');
@@ -1747,6 +2533,12 @@
                     </div>
 
                     <div class="section-title">Elementos a Inspeccionar</div>
+                    
+                    <div class="checklist-legend" style="margin-bottom: 15px;">
+                        <div class="legend-item"><span class="legend-badge c" style="background:#27ae60">B</span> Bueno</div>
+                        <div class="legend-item"><span class="legend-badge nc" style="background:#e74c3c">M</span> Malo</div>
+                    </div>
+
                     <div class="kit-cards-container" style="display: flex; flex-direction: column; gap: 16px;">
             `;
 
@@ -1817,7 +2609,98 @@
             const step3 = document.getElementById('step-3');
             const type = document.getElementById('modal-tipo-registro').value;
             
-            if (type === 'Inspección de Kit Anti-derrame') {
+            if (type === 'Inspeccion de Herramientas manuales') {
+                step3.innerHTML = `
+                    <div class="section-title">Validación de la Inspección</div>
+                    <div class="inspector-section" style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label>Nombre del Inspector</label>
+                            <div class="input-wrapper"><input type="text" placeholder="Nombre completo" value="Carlos Ríos Chávez"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Cargo del Inspector</label>
+                            <div class="input-wrapper"><input type="text" placeholder="Cargo" value="Supervisor SSTMA"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Firma de Inspección</label>
+                            <div class="input-wrapper" style="height: 140px; flex-direction: column; justify-content: center; background: #fff; border: 2px dashed #7d3c98; border-radius: 12px; cursor: pointer;">
+                                <i class="ti ti-pencil" style="font-size: 32px; color: #7d3c98; margin-bottom: 10px;"></i>
+                                <span style="color:#7d3c98; font-size: 13px; font-weight: 600;">Haz clic o desliza para firmar</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: #fdf2f2; border: 1px solid #f8d7da; padding: 15px; border-radius: 10px; margin-top: 25px;">
+                        <p style="font-size: 11px; color: #a94442; line-height: 1.4;"><strong>Declaración:</strong> Certifico que las herramientas inspeccionadas cumplen con los estándares de seguridad establecidos.</p>
+                    </div>
+                `;
+            } else if (type === 'Inspeccion de Mochila de Emergencia' || type === 'Inspeccion de Botiquin de Primeros Auxilios') {
+                const isMochila = type === 'Inspeccion de Mochila de Emergencia';
+                const accentColor = isMochila ? '#27ae60' : '#c0392b';
+                const lightAccent = isMochila ? '#f0fff4' : '#fff5f5';
+                const dashColor = isMochila ? '#c6f6d5' : '#fbdada';
+                
+                step3.innerHTML = `
+                    <div class="section-title">Validación de las 4 Inspecciones</div>
+                    <p style="font-size: 11px; color: #888; margin-bottom: 20px;">Cada una de las 4 inspecciones periódicas de la ${isMochila ? 'mochila' : 'botiquín'} debe ser validada.</p>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        ${[1, 2, 3, 4].map(i => `
+                            <div style="background: #fff; border: 1px solid #eef0f5; border-radius: 12px; padding: 20px; border-left: 5px solid ${accentColor}; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                    <div style="font-weight: 800; color: ${accentColor}; font-size: 13px;">INSPECCIÓN N° ${i}</div>
+                                    <div style="background: ${lightAccent}; color: ${accentColor}; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700;">PENDIENTE</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nombre del Inspector</label>
+                                    <div class="input-wrapper"><input type="text" placeholder="Ej: Juan Pérez"></div>
+                                </div>
+                                <div class="form-row" style="margin-top: 15px;">
+                                    <div class="form-group" style="flex: 1;">
+                                        <label>Fecha de Inspección</label>
+                                        <div class="input-wrapper"><input type="date"></div>
+                                    </div>
+                                    <div class="form-group" style="flex: 1.5;">
+                                        <label>Firma del Inspector</label>
+                                        <div class="input-wrapper" style="height: 44px; cursor: pointer; background: #fff; border: 2px dashed ${dashColor}; justify-content: center; color: ${accentColor}; font-size: 11px; font-weight: 600; border-radius: 8px;">
+                                            <i class="ti ti-pencil" style="margin-right: 6px;"></i> Firmar Registro ${i}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (type === 'Inspeccion de lavaojos') {
+                step3.innerHTML = `
+                    <div class="section-title">Validación de las 7 Inspecciones</div>
+                    <p style="font-size: 11px; color: #888; margin-bottom: 20px;">Cada una de las 7 inspecciones periódicas registradas debe contar con su validación correspondiente.</p>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        ${[1, 2, 3, 4, 5, 6, 7].map(i => `
+                            <div style="background: #fff; border: 1px solid #eef0f5; border-radius: 12px; padding: 20px; border-left: 5px solid #1a3a6e; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                    <div style="font-weight: 800; color: #1a3a6e; font-size: 13px;">INSPECCIÓN N° ${i}</div>
+                                    <div style="background: #f0f4ff; color: #1a3a6e; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700;">PENDIENTE</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nombre del Inspector</label>
+                                    <div class="input-wrapper"><input type="text" placeholder="Ej: Juan Pérez"></div>
+                                </div>
+                                <div class="form-row" style="margin-top: 15px;">
+                                    <div class="form-group" style="flex: 1;">
+                                        <label>Fecha de Inspección</label>
+                                        <div class="input-wrapper"><input type="date"></div>
+                                    </div>
+                                    <div class="form-group" style="flex: 1.5;">
+                                        <label>Firma del Inspector</label>
+                                        <div class="input-wrapper" style="height: 44px; cursor: pointer; background: #fff; border: 2px dashed #d1d9e6; justify-content: center; color: #1a3a6e; font-size: 11px; font-weight: 600; border-radius: 8px;">
+                                            <i class="ti ti-pencil" style="margin-right: 6px;"></i> Firmar Registro ${i}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (type === 'Inspección de Kit Anti-derrame') {
                 step3.innerHTML = `
                     <div class="section-title">Validación de las 5 Inspecciones</div>
                     <p style="font-size: 11px; color: #888; margin-bottom: 20px;">Cada una de las 5 inspecciones registradas debe contar con su validación correspondiente.</p>
@@ -1966,26 +2849,101 @@
         }
 
         function updateModalSteps() {
-            // Update UI steps
-            document.querySelectorAll('.step').forEach((s, idx) => {
+            const steps = document.querySelectorAll('.step');
+            const contents = document.querySelectorAll('.modal-step-content');
+            const maxSteps = (currentKey === 'vehicular' || currentKey === 'emergencia') ? 4 : 3;
+
+            steps.forEach((s, idx) => {
                 const stepNum = idx + 1;
                 s.classList.remove('active', 'completed');
                 if (stepNum === currentModalStep) s.classList.add('active');
                 if (stepNum < currentModalStep) s.classList.add('completed');
             });
 
-            // Update content
-            document.querySelectorAll('.modal-step-content').forEach((c, idx) => {
+            contents.forEach((c, idx) => {
                 const stepNum = idx + 1;
-                c.classList.toggle('active', stepNum === currentModalStep);
+                c.classList.remove('active');
+                if (stepNum === currentModalStep) c.classList.add('active');
             });
 
-            // Special handling for Step 3 (Signatures)
-            if (currentModalStep === 3) {
-                setupKitSignatureStep();
+            // Specific logic for step content in vehicular or emergencia
+            if (currentKey === 'vehicular') {
+                if (currentModalStep === 3) {
+                    renderVehicularChecklist();
+                    document.getElementById('checklist-area-step3').style.display = 'block';
+                    document.getElementById('signature-area-step3').style.display = 'none';
+                } else if (currentModalStep === 4) {
+                    const sig4 = document.getElementById('signature-area-step4');
+                    sig4.innerHTML = `
+                        <div class="section-title">Validación Final</div>
+                        <div class="inspector-section" style="grid-template-columns: 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label>Nombre del Inspector</label>
+                                <div class="input-wrapper"><input type="text" value="Carlos Ríos Chávez"></div>
+                            </div>
+                        </div>
+                        <div class="section-title">Firma Digital</div>
+                        <div class="form-group">
+                            <label>Firma de Inspección</label>
+                            <div class="input-wrapper" style="height: 120px; flex-direction: column; justify-content: center; background: #fff; border: 2px dashed #2b63ff; border-radius: 8px; cursor: pointer;">
+                                <i class="ti ti-pencil" style="font-size: 30px; color: #2b63ff; margin-bottom: 10px;"></i>
+                                <span style="color:#2b63ff; font-size: 12px; font-weight: 600;">Firma del Inspector</span>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('signature-area-step4').style.display = 'block';
+                }
+            } else if (currentKey === 'emergencia') {
+                if (currentModalStep === 3) {
+                    renderEmergenciaEquipmentTable();
+                    document.getElementById('checklist-area-step3').style.display = 'block';
+                    document.getElementById('signature-area-step3').style.display = 'none';
+                } else if (currentModalStep === 4) {
+                    const sig4 = document.getElementById('signature-area-step4');
+                    sig4.innerHTML = `
+                        <div class="section-title" style="background: #c0392b; color: white; padding: 10px; border-radius: 6px; text-align: center; margin-bottom: 20px;">VALIDACIÓN Y ENTREGA FINAL</div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="signature-block">
+                                <div class="section-title" style="font-size: 11px; margin-bottom: 10px; background: #1a3a6e; color: #fff;">EQUIPOS ASIGNADOS POR:</div>
+                                <div class="form-group"><label>Nombre</label><div class="input-wrapper"><input type="text" value="Carlos Ríos Chávez"></div></div>
+                                <div class="form-group"><label>Cargo</label><div class="input-wrapper"><input type="text" value="Supervisor SSTMA"></div></div>
+                                <div class="form-group"><label>Fecha</label><div class="input-wrapper"><input type="date" value="${new Date().toISOString().split('T')[0]}"></div></div>
+                                <div class="form-group" style="margin-top: 10px;">
+                                    <div class="input-wrapper" style="height: 100px; border: 2px dashed #1a3a6e; justify-content: center; cursor: pointer; background: #fff;">
+                                        <i class="ti ti-pencil" style="color: #1a3a6e; font-size: 24px;"></i>
+                                        <span style="font-size: 10px; color: #1a3a6e; margin-top: 5px; font-weight: 700;">Firma Emisor</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="signature-block">
+                                <div class="section-title" style="font-size: 11px; margin-bottom: 10px; background: #c0392b; color: #fff;">RESPONSABLE DEL REGISTRO (RECEPTOR):</div>
+                                <div class="form-group"><label>Nombre</label><div class="input-wrapper"><input type="text" placeholder="Nombre Receptor"></div></div>
+                                <div class="form-group"><label>Cargo</label><div class="input-wrapper"><input type="text" placeholder="Cargo"></div></div>
+                                <div class="form-group"><label>Fecha</label><div class="input-wrapper"><input type="date" value="${new Date().toISOString().split('T')[0]}"></div></div>
+                                <div class="form-group" style="margin-top: 10px;">
+                                    <div class="input-wrapper" style="height: 100px; border: 2px dashed #c0392b; justify-content: center; cursor: pointer; background: #fff;">
+                                        <i class="ti ti-pencil" style="color: #c0392b; font-size: 24px;"></i>
+                                        <span style="font-size: 10px; color: #c0392b; margin-top: 5px; font-weight: 700;">Firma Receptor</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: #fdf2f2; border: 1px solid #f8d7da; padding: 12px; border-radius: 6px; margin-top: 20px;">
+                            <p style="font-size: 10px; color: #a94442; text-align: center; line-height: 1.4;">
+                                <strong>Nota de Validación:</strong> La firma en este registro certifica que el trabajador ha recibido los equipos detallados y se compromete a su uso correcto y mantenimiento.
+                            </p>
+                        </div>
+                    `;
+                    document.getElementById('signature-area-step4').style.display = 'block';
+                }
+            } else {
+                const cl3 = document.getElementById('checklist-area-step3');
+                if(cl3) cl3.style.display = 'none';
+                const sig3 = document.getElementById('signature-area-step3');
+                if(sig3) sig3.style.display = 'block';
             }
 
-            // Update footer buttons
             const btnPrev = document.getElementById('modal-btn-prev');
             const btnNext = document.getElementById('modal-btn-next');
             const btnSave = document.getElementById('modal-btn-save');
@@ -1994,13 +2952,11 @@
                 btnPrev.style.display = 'none';
                 btnNext.style.display = 'flex';
                 btnSave.style.display = 'none';
-            } else if (currentModalStep === 2) {
+            } else if (currentModalStep < maxSteps) {
                 btnPrev.style.display = 'flex';
                 btnNext.style.display = 'flex';
                 btnSave.style.display = 'none';
-                
-                // If no type selected, we should ideally disable Next, but let's keep it simple
-            } else if (currentModalStep === 3) {
+            } else {
                 btnPrev.style.display = 'flex';
                 btnNext.style.display = 'none';
                 btnSave.style.display = 'flex';
@@ -2008,9 +2964,9 @@
         }
 
         function nextModalStep() {
-            if (currentModalStep < 3) {
-                // Validation for Step 1
-                if (currentModalStep === 1) {
+            const maxSteps = (currentKey === 'vehicular' || currentKey === 'emergencia') ? 4 : 3;
+            if (currentModalStep < maxSteps) {
+                if (currentModalStep === 1 && currentKey !== 'desvios' && currentKey !== 'vehicular') {
                     const type = document.getElementById('modal-tipo-registro').value;
                     if (!type) {
                         alert('Por favor seleccione un Tipo de Registro');
@@ -2045,10 +3001,14 @@
                 </div>
                 <div class="step" id="st-2">
                     <div class="step-circle">2</div>
-                    <div class="step-label">Inspección</div>
+                    <div class="step-label" id="st-2-label">Inspección</div>
                 </div>
                 <div class="step" id="st-3">
                     <div class="step-circle">3</div>
+                    <div class="step-label" id="st-3-label">Firma</div>
+                </div>
+                <div class="step" id="st-4" style="display:none;">
+                    <div class="step-circle">4</div>
                     <div class="step-label">Firma</div>
                 </div>
             </div>
@@ -2079,7 +3039,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="modal-type-group">
                         <label>Tipo Registro</label>
                         <div class="input-wrapper">
                             <select id="modal-tipo-registro">
@@ -2100,38 +3060,46 @@
                     <div id="checklist-area"></div>
                 </div>
 
-                <!-- STEP 3: VALIDATION AND SIGNATURE -->
+                <!-- STEP 3: DYNAMIC CHECKLIST (for vehicular) or SIGNATURE -->
                 <div class="modal-step-content" id="step-3">
-                    <div class="section-title">Validación Final</div>
-                    <div class="inspector-section" style="grid-template-columns: 1fr; gap: 15px;">
-                        <div class="form-group">
-                            <label>Nombre del Inspector</label>
-                            <div class="input-wrapper">
-                                <input type="text" placeholder="Nombre completo" value="Carlos Ríos Chávez">
+                    <div id="checklist-area-step3"></div>
+                    <div id="signature-area-step3">
+                        <div class="section-title">Validación Final</div>
+                        <div class="inspector-section" style="grid-template-columns: 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label>Nombre del Inspector</label>
+                                <div class="input-wrapper">
+                                    <input type="text" placeholder="Nombre completo" value="Carlos Ríos Chávez">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Cargo del Inspector</label>
+                                <div class="input-wrapper">
+                                    <input type="text" placeholder="Cargo" value="Supervisor SSTMA">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Cargo del Inspector</label>
-                            <div class="input-wrapper">
-                                <input type="text" placeholder="Cargo" value="Supervisor SSTMA">
+                        
+                        <div class="section-title">Firma Digital</div>
+                        <div class="form-group" style="margin-top:10px">
+                            <label>Firma de Inspección</label>
+                            <div class="input-wrapper" style="height: 120px; flex-direction: column; justify-content: center; background: #fff; border: 2px dashed #2b63ff; border-radius: 8px; cursor: pointer;">
+                                <i class="ti ti-pencil" style="font-size: 30px; color: #2b63ff; margin-bottom: 10px;"></i>
+                                <span style="color:#2b63ff; font-size: 12px; font-weight: 600;">Haz clic o desliza para firmar</span>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="section-title">Firma Digital</div>
-                    <div class="form-group" style="margin-top:10px">
-                        <label>Firma de Inspección</label>
-                        <div class="input-wrapper" style="height: 120px; flex-direction: column; justify-content: center; background: #fff; border: 2px dashed #2b63ff; border-radius: 8px; cursor: pointer;">
-                            <i class="ti ti-pencil" style="font-size: 30px; color: #2b63ff; margin-bottom: 10px;"></i>
-                            <span style="color:#2b63ff; font-size: 12px; font-weight: 600;">Haz clic o desliza para firmar</span>
+                        
+                        <div style="background: #fdf2f2; border: 1px solid #f8d7da; padding: 12px; border-radius: 6px; margin-top: 20px;">
+                            <p style="font-size: 11px; color: #a94442;">
+                                <strong>Aviso:</strong> Al guardar este registro, usted declara que la información proporcionada es verídica y ha sido verificada en campo.
+                            </p>
                         </div>
                     </div>
-                    
-                    <div style="background: #fdf2f2; border: 1px solid #f8d7da; padding: 12px; border-radius: 6px; margin-top: 20px;">
-                        <p style="font-size: 11px; color: #a94442;">
-                            <strong>Aviso:</strong> Al guardar este registro, usted declara que la información proporcionada es verídica y ha sido verificada en campo.
-                        </p>
-                    </div>
+                </div>
+
+                <!-- STEP 4: SIGNATURE (only for vehicular) -->
+                <div class="modal-step-content" id="step-4">
+                    <div id="signature-area-step4"></div>
                 </div>
             </div>
 
