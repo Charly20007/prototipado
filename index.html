@@ -741,6 +741,26 @@
             display: inline-block;
         }
 
+        .badge-revision {
+            background: #3498db;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .badge-anulado {
+            background: #95a5a6;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
         .insp-footer {
             padding: 10px 20px;
             border-top: 1px solid #e0e0e0;
@@ -1572,7 +1592,15 @@
             document.getElementById('btn-prev').style.opacity = currentPage === 1 ? '0.35' : '1';
             document.getElementById('btn-next').style.opacity = currentPage >= totalPages ? '0.35' : '1';
             document.getElementById('insp-tbody').innerHTML = filteredRows.slice(start, end).map((r, i) => {
-                const badge = r[5] === 'CERRADO' ? '<span class="badge-cerrado">CERRADO</span>' : r[5] === 'PROCESO' ? '<span class="badge-proceso">PROCESO</span>' : '<span class="badge-pendiente">' + r[5] + '</span>';
+                let badgeClass = 'badge-pendiente';
+                let statusText = r[5] || 'PENDIENTE';
+
+                if (statusText === 'CERRADO' || statusText === 'APROBADO') badgeClass = 'badge-cerrado';
+                else if (statusText === 'EN REVISIÓN' || statusText === 'REVISIÓN') badgeClass = 'badge-revision';
+                else if (statusText === 'PROCESO') badgeClass = 'badge-proceso';
+                else if (statusText === 'ANULADO') badgeClass = 'badge-anulado';
+
+                const badge = `<span class="${badgeClass}">${statusText}</span>`;
                 const globalIdx = start + i;
                 return `<tr>
                     <td style="color:#c0392b;font-weight:800; font-size:11px;">${r[0]}</td>
@@ -1652,14 +1680,28 @@
                 }
             });
 
-            // Format: [N° Registro, Tipo Registro, División, Área Inspeccionada, Tipo Inspección, Estado, Fecha Inspección, Hora, Responsable Área, ChecklistState]
+            // Dynamic Status Logic
+            let finalStatus = 'CERRADO';
+            if (currentKey === 'desvios') {
+                // Deviations usually start as PENDIENTE until validated
+                finalStatus = isEditMode ? (INSP_DATA[currentKey].rows[editRowIndex][5] === 'PENDIENTE' ? 'EN REVISIÓN' : INSP_DATA[currentKey].rows[editRowIndex][5]) : 'PENDIENTE';
+                
+                // If it's being edited and we want to "Close" it, we could check for signatures
+                const respName = checklistState['desv_resp_actividad'];
+                if (isEditMode && respName && respName.length > 5) {
+                    finalStatus = 'APROBADO';
+                }
+            } else if (currentKey === 'vehicular' || currentKey === 'emergencia') {
+                finalStatus = 'APROBADO';
+            }
+
             const newRow = [
                 newId, 
                 type || 'Inspección General', 
                 division, 
                 area, 
                 'Planeado', 
-                'CERRADO', 
+                finalStatus, 
                 date.split('-').reverse().join('/'), 
                 time, 
                 inspector,
