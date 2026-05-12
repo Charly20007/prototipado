@@ -1360,23 +1360,23 @@
                     <div class="stat-grid">
                         <div class="stat-card t-gray">
                             <div class="stat-label">Total</div>
-                            <div class="stat-num">5</div>
+                            <div id="stat-total" class="stat-num">0</div>
                         </div>
                         <div class="stat-card t-amber">
-                            <div class="stat-label">Pend. Firma</div>
-                            <div class="stat-num">2</div>
+                            <div class="stat-label">Pendientes</div>
+                            <div id="stat-pend" class="stat-num">0</div>
                         </div>
                         <div class="stat-card t-purple">
-                            <div class="stat-label">Rev. SSTMA</div>
-                            <div class="stat-num">1</div>
+                            <div class="stat-label">En Revisión</div>
+                            <div id="stat-rev" class="stat-num">0</div>
                         </div>
                         <div class="stat-card t-blue">
                             <div class="stat-label">Autorización</div>
-                            <div class="stat-num">1</div>
+                            <div id="stat-auth" class="stat-num">0</div>
                         </div>
                         <div class="stat-card t-green">
                             <div class="stat-label">Cerrados</div>
-                            <div class="stat-num">1</div>
+                            <div id="stat-closed" class="stat-num">0</div>
                         </div>
                     </div>
                     <div class="toolbar">
@@ -1405,35 +1405,7 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span class="num-link">001</span></td>
-                                    <td>2025-07-01</td>
-                                    <td>Irsa Sur</td>
-                                    <td><span class="badge-type seg">Seguridad</span></td>
-                                    <td>Miguel Sánchez</td>
-                                    <td><span class="badge pend">Pendiente firma</span></td>
-                                    <td><button class="action-btn">Ver</button></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="num-link">002</span></td>
-                                    <td>2025-07-02</td>
-                                    <td>Irsa Norte</td>
-                                    <td><span class="badge-type ma">Medio Ambiente</span></td>
-                                    <td>Ana Torres</td>
-                                    <td><span class="badge rev">Rev. SSTMA</span></td>
-                                    <td><button class="action-btn">Ver</button></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="num-link">003</span></td>
-                                    <td>2025-07-03</td>
-                                    <td>Minera</td>
-                                    <td><span class="badge-type sal">Salud</span></td>
-                                    <td>Luis Paredes</td>
-                                    <td><span class="badge appr">Cerrado</span></td>
-                                    <td><button class="action-btn">Ver</button></td>
-                                </tr>
-                            </tbody>
+                            <tbody id="dash-tbody"></tbody>
                         </table>
                     </div>
                     <div style="padding:14px 0 0;font-size:12px;color:#555;text-align:center;">👆 Haz clic en una
@@ -1644,6 +1616,164 @@
             document.getElementById('view-insp').style.display = 'none';
             document.querySelectorAll('.nav-sub-item').forEach(e => e.classList.remove('active'));
             currentKey = null;
+            updateDashboard();
+        }
+
+        function updateDashboard() {
+            let total = 0, pend = 0, rev = 0, closed = 0;
+            let allRows = [];
+
+            Object.keys(INSP_DATA).forEach(key => {
+                const rows = INSP_DATA[key].rows;
+                total += rows.length;
+                rows.forEach(r => {
+                    if (r[5] === 'PENDIENTE') pend++;
+                    else if (r[5] === 'EN REVISIÓN' || r[5] === 'REVISIÓN' || r[5] === 'PROCESO') rev++;
+                    else if (r[5] === 'CERRADO' || r[5] === 'APROBADO') closed++;
+                    
+                    // Add key info for table display
+                    allRows.push({
+                        id: r[0],
+                        date: r[6],
+                        area: r[3],
+                        type: r[1],
+                        resp: r[8],
+                        status: r[5],
+                        key: key,
+                        origRow: r
+                    });
+                });
+            });
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-pend').textContent = pend;
+            document.getElementById('stat-rev').textContent = rev;
+            document.getElementById('stat-closed').textContent = closed;
+            document.getElementById('stat-auth').textContent = Math.floor(closed * 0.8); // Simulation
+
+            // Populate dashboard table with last 5
+            const tbody = document.getElementById('dash-tbody');
+            if (tbody) {
+                tbody.innerHTML = allRows.slice(0, 5).map(r => {
+                    let bClass = r.status === 'PENDIENTE' ? 'pend' : (r.status === 'APROBADO' || r.status === 'CERRADO' ? 'appr' : 'rev');
+                    let tClass = r.key.substring(0, 3);
+                    return `
+                        <tr>
+                            <td><span class="num-link">${r.id}</span></td>
+                            <td>${r.date}</td>
+                            <td>${r.area}</td>
+                            <td><span class="badge-type ${tClass}">${r.type}</span></td>
+                            <td>${r.resp}</td>
+                            <td><span class="badge ${bClass}">${r.status}</span></td>
+                            <td><button class="action-btn view" onclick="openInsp('${r.key}')"><i class="ti ti-eye"></i></button></td>
+                        </tr>
+                    `;
+                }).join('') || '<tr><td colspan="7" style="text-align:center; padding: 20px; color: #999;">No hay registros recientes</td></tr>';
+            }
+        }
+
+
+        function showToast(msg, type = 'success') {
+            const toast = document.createElement('div');
+            const bg = type === 'success' ? 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)' : 'linear-gradient(135deg, #e74c3c 0%, #ff7675 100%)';
+            const icon = type === 'success' ? 'ti-circle-check' : 'ti-alert-circle';
+            
+            toast.style = `position:fixed; top:30px; right:30px; background:${bg}; color:#fff; padding:16px 28px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.2); z-index:20000; font-weight:700; display:flex; align-items:center; gap:12px; animation: slideInToast 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); border: 1px solid rgba(255,255,255,0.2);`;
+            toast.innerHTML = `<i class="ti ${icon}" style="font-size:22px"></i> <div><div style="font-size:10px; opacity:0.8; text-transform:uppercase; letter-spacing:1px">Sistema SSOMA</div><div style="font-size:14px">${msg}</div></div>`;
+            document.body.appendChild(toast);
+
+            if (!document.getElementById('toast-anim')) {
+                const s = document.createElement('style');
+                s.id = 'toast-anim';
+                s.innerHTML = "@keyframes slideInToast { from { transform: translateX(100%) scale(0.8); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }";
+                document.head.appendChild(s);
+            }
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(50px) scale(0.9)';
+                toast.style.opacity = '0';
+                toast.style.transition = 'all 0.4s ease-in';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+
+        function showAlert(msg) {
+            const overlay = document.createElement('div');
+            overlay.style = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; z-index:20001; animation: fadeInAlert 0.3s ease;";
+            overlay.innerHTML = `
+                <div style="background:#fff; width:90%; max-width:400px; border-radius:16px; overflow:hidden; box-shadow:0 25px 50px rgba(0,0,0,0.3); animation: scaleUpAlert 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div style="background:#e74c3c; padding:20px; text-align:center;">
+                        <i class="ti ti-alert-triangle" style="font-size:50px; color:#fff;"></i>
+                    </div>
+                    <div style="padding:30px; text-align:center;">
+                        <h3 style="margin-bottom:15px; color:#1a3a6e; font-weight:800;">REGLA CRÍTICA</h3>
+                        <p style="color:#555; font-size:14px; line-height:1.5;">${msg}</p>
+                        <button onclick="this.closest('.modal-overlay-alert').remove()" style="margin-top:25px; background:#1a3a6e; color:#fff; border:none; padding:12px 30px; border-radius:8px; font-weight:700; cursor:pointer; width:100%; transition:all 0.2s;">Entendido</button>
+                    </div>
+                </div>
+            `;
+            overlay.className = 'modal-overlay-alert';
+            document.body.appendChild(overlay);
+
+            if (!document.getElementById('alert-anim')) {
+                const s = document.createElement('style');
+                s.id = 'alert-anim';
+                s.innerHTML = "@keyframes fadeInAlert { from { opacity:0; } to { opacity:1; } } @keyframes scaleUpAlert { from { transform: scale(0.8); opacity:0; } to { transform: scale(1); opacity:1; } }";
+                document.head.appendChild(s);
+            }
+        }
+
+
+        let sigPads = {};
+
+        function initSignature(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let drawing = false;
+
+            // Clear previous if any
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#1a3a6e';
+
+            const startDrawing = (e) => {
+                drawing = true;
+                draw(e);
+            };
+            const stopDrawing = () => {
+                drawing = false;
+                ctx.beginPath();
+            };
+            const draw = (e) => {
+                if (!drawing) return;
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            };
+
+            canvas.onmousedown = startDrawing;
+            canvas.onmouseup = stopDrawing;
+            canvas.onmousemove = draw;
+            canvas.ontouchstart = (e) => { e.preventDefault(); startDrawing(e); };
+            canvas.ontouchend = stopDrawing;
+            canvas.ontouchmove = (e) => { e.preventDefault(); draw(e); };
+            
+            sigPads[canvasId] = canvas;
+        }
+
+        function clearSignature(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
         }
 
         function toggleInsp() {
@@ -1679,6 +1809,22 @@
                     checklistState[key] = el.value;
                 }
             });
+
+            // Capture real signatures from canvases
+            Object.keys(sigPads).forEach(id => {
+                const canvas = sigPads[id];
+                // Save as Base64 data URL
+                checklistState[id] = canvas.toDataURL();
+            });
+
+            // Rule 11.3: Mandatory responsibility signature for closure
+            if (currentKey === 'desvios') {
+                const respName = checklistState['desv_resp_actividad'];
+                if (!respName || respName.trim().length < 5) {
+                    showAlert('Regla Crítica 11.3: Se requiere el Nombre del Responsable de la Actividad para cerrar el reporte.');
+                    return;
+                }
+            }
 
             // Dynamic Status Logic
             let finalStatus = 'CERRADO';
@@ -1721,26 +1867,8 @@
             renderPage();
             closeModal();
             
-            // Success Notification
-            const toast = document.createElement('div');
-            toast.style = "position:fixed; top:20px; right:20px; background:#27ae60; color:#fff; padding:12px 24px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:10001; font-weight:600; display:flex; align-items:center; gap:10px; animation: slideIn 0.3s ease-out;";
-            toast.innerHTML = `<i class="ti ti-circle-check"></i> Registro ${newId} ${isEditMode ? 'actualizado' : 'guardado'} con éxito`;
-            document.body.appendChild(toast);
-            
-            // Add keyframes if not exists
-            if (!document.getElementById('toast-styles')) {
-                const style = document.createElement('style');
-                style.id = 'toast-styles';
-                style.innerHTML = "@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }";
-                document.head.appendChild(style);
-            }
-
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(20px)';
-                toast.style.transition = 'all 0.5s ease-in';
-                setTimeout(() => toast.remove(), 500);
-            }, 3000);
+            showToast(`Registro ${newId} ${isEditMode ? 'actualizado' : 'guardado'} con éxito`, 'success');
+            updateDashboard();
             } catch (err) {
                 console.error('Error saving:', err);
                 alert('Ocurrió un error al guardar el registro. Por favor verifique los datos.');
@@ -3026,10 +3154,9 @@
 
                             <div class="form-group">
                                 <label style="font-weight: 700; color: #1a3a6e; font-size: 13px;">FIRMA DIGITAL DEL RESPONSABLE</label>
-                                <div class="input-wrapper" style="height: 160px; flex-direction: column; justify-content: center; background: #fcfcfc; border: 2px dashed #e74c3c; border-radius: 12px; cursor: pointer; transition: all 0.3s; margin-top: 10px;">
-                                    <i class="ti ti-pencil" style="font-size: 42px; color: #e74c3c; margin-bottom: 12px;"></i>
-                                    <span style="color:#e74c3c; font-size: 14px; font-weight: 700;">Haga clic aquí para firmar</span>
-                                    <span style="color:#777; font-size: 11px; margin-top: 5px;">Al firmar, confirma que las acciones correctivas han sido validadas.</span>
+                                <div class="input-wrapper" style="height: 160px; flex-direction: column; background: #fcfcfc; border: 2px dashed #e74c3c; border-radius: 12px; position: relative; margin-top: 10px;">
+                                    <canvas id="canvas-step4-desv" width="600" height="160" style="width:100%; height:100%; cursor: crosshair;"></canvas>
+                                    <button type="button" onclick="clearSignature('canvas-step4-desv')" style="position:absolute; bottom:10px; right:10px; background:#fff; border:1px solid #e74c3c; color:#e74c3c; font-size:10px; padding:4px 10px; border-radius:6px; cursor:pointer; font-weight:700;">Limpiar Firma</button>
                                 </div>
                             </div>
 
@@ -3229,18 +3356,39 @@
                 btnNext.style.display = 'none';
                 btnSave.style.display = 'flex';
             }
+            // Init canvas if present for any step
+            setTimeout(() => {
+                if (document.getElementById('canvas-step3')) initSignature('canvas-step3');
+                if (document.getElementById('canvas-step4-desv')) initSignature('canvas-step4-desv');
+            }, 100);
         }
 
         function nextModalStep() {
             const maxSteps = (currentKey === 'vehicular' || currentKey === 'emergencia' || currentKey === 'desvios') ? 4 : 3;
-            if (currentModalStep < maxSteps) {
-                if (currentModalStep === 1 && currentKey !== 'desvios' && currentKey !== 'vehicular') {
-                    const type = document.getElementById('modal-tipo-registro').value;
-                    if (!type) {
-                        alert('Por favor seleccione un Tipo de Registro');
-                        return;
-                    }
+            
+            // Critical Rule 11.1 & 11.2: Validations before advancing
+            if (currentModalStep === 1) {
+                const type = document.getElementById('modal-tipo-registro').value;
+                if (!type && currentKey !== 'desvios' && currentKey !== 'vehicular') {
+                    showAlert('Regla Crítica: Debe seleccionar un Tipo de Registro para continuar.');
+                    return;
                 }
+            }
+            
+            if (currentKey === 'desvios' && currentModalStep === 3) {
+                const desc = document.querySelector('textarea[name="desv_descripcion"]');
+                const acc = document.querySelector('textarea[name="desv_acciones_inmed"]');
+                if (desc && desc.value.trim().length < 5) {
+                    showAlert('Regla Crítica 11.2: Debe ingresar una DESCRIPCIÓN DEL DESVÍO antes de proceder a la firma.');
+                    return;
+                }
+                if (acc && acc.value.trim().length < 5) {
+                    showAlert('Regla Crítica 11.2: Debe registrar las ACCIONES INMEDIATAS para asegurar la mitigación del riesgo.');
+                    return;
+                }
+            }
+
+            if (currentModalStep < maxSteps) {
                 currentModalStep++;
                 updateModalSteps();
             }
@@ -3353,9 +3501,9 @@
                         <div class="section-title">Firma Digital</div>
                         <div class="form-group" style="margin-top:10px">
                             <label>Firma de Inspección</label>
-                            <div class="input-wrapper" style="height: 120px; flex-direction: column; justify-content: center; background: #fff; border: 2px dashed #2b63ff; border-radius: 8px; cursor: pointer;">
-                                <i class="ti ti-pencil" style="font-size: 30px; color: #2b63ff; margin-bottom: 10px;"></i>
-                                <span style="color:#2b63ff; font-size: 12px; font-weight: 600;">Haz clic o desliza para firmar</span>
+                            <div class="input-wrapper" style="height: 150px; flex-direction: column; background: #fff; border: 2px dashed #2b63ff; border-radius: 8px; position: relative;">
+                                <canvas id="canvas-step3" width="500" height="150" style="width:100%; height:100%; cursor: crosshair;"></canvas>
+                                <button type="button" onclick="clearSignature('canvas-step3')" style="position:absolute; bottom:5px; right:5px; background:#f4f4f4; border:1px solid #ddd; font-size:9px; padding:2px 6px; border-radius:4px; cursor:pointer;">Limpiar</button>
                             </div>
                         </div>
                         
