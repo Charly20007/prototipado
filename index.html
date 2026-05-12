@@ -2613,9 +2613,6 @@
                                 <span style="font-weight: 800; color: #1a3a6e; font-size: 14px;">${idx + 1}. ${item}</span>
                             </div>
                         </div>
-                        <div class="input-wrapper" style="height:32px; border-radius: 6px; border-color: #cbd5e0; background: #fff;">
-                                    <input type="text" name="lavaojos-item-${idx}-obs" placeholder="Obs..." style="font-size: 11px; padding: 0 8px;">
-                                </div>
                         <div style="background: #fdfdfe; border: 1px solid #f0f4f8; padding: 12px; border-radius: 8px; width: 100%; margin-top: 10px;">
                             <label style="font-size: 9px; font-weight: 700; color: #2b63ff; text-transform: uppercase; margin-bottom: 8px; display: block;">Inspecciones (1-7)</label>
                             <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%;">
@@ -3123,6 +3120,40 @@
                                                             <i class="ti ti-pencil"></i>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                `;
+                            }
+                        }
+                    } else if (type === 'Inspeccion de lavaojos') {
+                        if (sig3) sig3.style.display = 'none';
+                        if (cl3) {
+                            cl3.style.display = 'block';
+                            if (!cl3.innerHTML.includes('lavaojos-insp-1-name')) {
+                                cl3.innerHTML = `
+                                    <div class="section-title">Validación de Inspecciones Periódicas (1-7)</div>
+                                    <p style="font-size: 11px; color: #888; margin-bottom: 15px; text-align: center;">Firme en la columna correspondiente a la inspección actual.</p>
+                                    
+                                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;">
+                                        ${[1, 2, 3, 4, 5, 6, 7].map(i => `
+                                            <div style="background: #fff; border: 1px solid #eef0f5; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                                                <div style="text-align: center; font-weight: 800; color: #2b63ff; font-size: 10px; margin-bottom: 5px;">INSP ${i}</div>
+                                                
+                                                <div class="form-group" style="margin:0">
+                                                    <label style="font-size: 8px; margin-bottom: 2px;">Nombre</label>
+                                                    <div class="input-wrapper" style="height: 28px;"><input type="text" name="lavaojos-insp-${i}-name" placeholder="..." style="font-size: 9px; padding: 0 4px;"></div>
+                                                </div>
+                                                
+                                                <div class="form-group" style="margin:0">
+                                                    <label style="font-size: 8px; margin-bottom: 2px;">Fecha</label>
+                                                    <div class="input-wrapper" style="height: 28px;"><input type="date" name="lavaojos-insp-${i}-date" style="font-size: 9px; padding: 0 4px;"></div>
+                                                </div>
+                                                
+                                                <div style="height: 60px; border: 1px dashed #2b63ff; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f0f7ff; cursor: pointer;">
+                                                    <i class="ti ti-pencil" style="color: #2b63ff; font-size: 16px;"></i>
+                                                    <span style="font-size: 8px; color: #2b63ff; font-weight: 700; margin-top: 2px;">FIRMA</span>
                                                 </div>
                                             </div>
                                         `).join('')}
